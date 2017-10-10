@@ -5,7 +5,9 @@ var path = require('path');
 var routes = require('./routes');
 
 // Routes
-var entry = require('./routes/entry');
+const entry = require('./routes/entry');
+const manufacturers = require('./routes/manufacturers');
+const items = require('./routes/items');
 
 var app = express();
 
@@ -40,11 +42,20 @@ db.connect((err) => {
 	console.log('MySQL connection established.');
 });
 
+// Make db accessible to routing.
+app.use((req, res, next) => {
+	req.db = db;
+	next();
+});
 
 
 
+// Routing
 app.get('/', routes.index);
 app.get('/entry', entry.show );
+app.get('/manufacturers', manufacturers.listManufacturers);
+// app.get('/items', items.listItems);
+// app.get('/manufacturers/add', manufacturers.add);
 
 
 
