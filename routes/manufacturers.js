@@ -14,9 +14,20 @@ exports.listManufacturers = (req, res) => {
 
 };
 
+/*
+ * Add a manufacturer to the database.
+ *
+ */
 exports.addManufacturer = (req, res) => {
-
+    let stmt = "INSERT INTO inventory.manufacturers SET ?"
     var input = JSON.parse(JSON.stringify(req.body));
-    console.log(input);
+    var object = { name: input.name };
+
+    req.db.query(stmt, object, (err, rows) => {
+        if (err)
+            console.log("Error inserting new manufacturer: %s", err);
+        res.redirect('/manufacturers');
+    });
+    console.log('apple');
 };
 

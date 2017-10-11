@@ -1,4 +1,22 @@
 <%include partials/header.ejs %>
+
+<container>
+    <div>
+        <form method="POST" action="manufacturers/add">
+        <table cellpadding="11">
+            <tr>
+                <td class="label">Name</td><td>: <input type="text" name="name" required></td>
+            </tr>
+            <tr>
+                <td class="label"></td>
+                <td>
+                    &nbsp; <input type="submit" name="submit" value="Add Manufacturer">
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</container>
     <div class = "data-table">
         <table border="1" cellpadding="7" cellspacing="7">
             <tr>

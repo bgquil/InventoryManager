@@ -55,7 +55,7 @@ app.get('/', routes.index);
 app.get('/entry', entry.show );
 app.get('/manufacturers', manufacturers.listManufacturers);
 // app.get('/items', items.listItems);
-// app.get('/manufacturers/add', manufacturers.add);
+app.post('/manufacturers/add', manufacturers.addManufacturer);
 
 
 
