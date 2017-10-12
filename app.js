@@ -54,11 +54,27 @@ app.use((req, res, next) => {
 app.get('/', routes.index);
 app.get('/entry', entry.show );
 app.get('/manufacturers', manufacturers.listManufacturers);
-// app.get('/items', items.listItems);
 app.post('/manufacturers/add', manufacturers.addManufacturer);
+app.get('/items', items.listItems);
+app.post('/items/add', items.addItem);
 
 
 
+
+/* 
+Error Routing
+*/
+app.use((req, res) =>{
+ res.type('text/html');
+ res.status(404);
+ res.render('404.ejs', {title: '404'});
+});
+
+app.use((req, res) =>{
+	res.type('text/html');
+	res.status(500);
+	res.render('500.ejs', {title: '500'});
+   });
 
 
 

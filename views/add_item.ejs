@@ -1,0 +1,22 @@
+<%include partials/header %>
+<h1><%= title %></h1>
+<div class="container">
+    <form method="POST" action="/customers/add">
+       <div class="form-group">
+            <label>Manufacturer</label><input type="text" name="manufacturer">
+            
+            <label>Name</label><input type="text" name="name">
+            
+            <label>Model</label><input type="text" name="model">
+            
+            <label>Weight</label><input type="text" name="weight">
+            
+            <label>Price</label><input type="text" name="price">
+            
+            <label>Quantity</label><input type="text" name="quantity">
+            
+            <input type="submit" value="Add Manufacturer">
+        </div> 
+    </form>
+</div>
+<%include partials/footer %>

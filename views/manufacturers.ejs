@@ -1,43 +1,43 @@
 <%include partials/header.ejs %>
 
-<container>
-    <div>
-        <form method="POST" action="manufacturers/add">
-        <table cellpadding="11">
-            <tr>
-                <td class="label">Name</td><td>: <input type="text" name="name" required></td>
-            </tr>
-            <tr>
-                <td class="label"></td>
-                <td>
-                    &nbsp; <input type="submit" name="submit" value="Add Manufacturer">
-                </td>
-            </tr>
-        </table>
+<div class="container">
+    <h3>Add Manufacturer</h3>
+        <form method="POST" action="/manufacturers/add">
+            <div class="form-group"></div>
+            <label for="manufacturerName">Name</label>
+            <input type="manufacturerName" class="form-control" id="manufacturerName" placeholder="Enter Manufacturer Name" name="manufacturerName">
+            <div></div>
+            <br>
+            <button type="submit" class="btn btn-primary">Add Manufacturer</button>
         </form>
     </div>
-</container>
-    <div class = "data-table">
-        <table border="1" cellpadding="7" cellspacing="7">
+    <br>
+</div>
+
+<div class ="container">
+    <table class="table  table-bordered table-hover">
+        <thead class="thead-inverse">
             <tr>
+                <th>Manufacturer ID</th>
                 <th>Name</th>
+        </tr>
+        </thead>
+        <% if(data.length){
+            for (var i = 0; i < data.length; i++) { %>
+
+            <tr>
+                <td><%=(i+1)%></td>
+                <td><%=data[i].manufacturerName%></td>
             </tr>
-            <% if(data.length){
-                for (var i = 0; i < data.length; i++) { %>
 
-                <tr>
-                    <td><%=(i+1)%></td>
-                    <td><%=data[i].name%></td>
-                </tr>
+            <%  }
+            }else{ %>
+            <tr>
+                <td colspan="3">No user</td>
+            </tr>
 
-                <%  }
-             }else{ %>
-                <tr>
-                    <td colspan="3">No user</td>
-                </tr>
+        <% } %>
 
-            <% } %>
-
-        </table>
-    </div>
+    </table>
+</div>
 <%include partials/footer.ejs %>
