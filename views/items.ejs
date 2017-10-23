@@ -1,34 +1,24 @@
 <%include partials/header.ejs %>
 
 <div class="container">
-    <h3>Add Item</h3>
-<form method="POST" action="/customers/add">
-    <div class="form-group">
-        <label for="manufacturer">Manufacturer</label>
-        <input type="text" class="form-control" id="manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="Name">
-      </div>
-      <div class="form-group">
-        <label for="model">Model</label>
-        <input type="text" class="form-control" id="model" placeholder="Model">
-      </div>
-      <div class="form-group">
-        <label for="weight">Weight</label>
-        <input type="text" class="form-control" id="weight" placeholder="Weight">
-      </div>
-      <div class="form-group">
-        <label for="price">Price</label>
-        <input type="text" class="form-control" id="price" placeholder="Price">
-      </div>        
-      <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <input type="number" class="form-control" id="quantity" placeholder="">
-      </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</div> 
+    <a class="btn btn-primary" href="/items/add">Add Item</a>
+</div>
+<br>
+
+<div class="container">
+    <h3>Search</h3>
+    <form action="/items/search" method="POST" class="form-inline">
+        <div class = "form-group">
+            <label for="searchBy">Search by </label>
+            <select class="form-control" id="searchBy" name="searchBy">
+                <option>Manufacturer</option>
+                <option>Name</option>
+                <option>Model</option>
+            </select>
+            <input type="text" class="form-control" name="searchQuery" id="searchQuery">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
 </div>
 
 <div class="container">
@@ -41,18 +31,22 @@
                 <th>Name</th>
                 <th>Model</th>
                 <th>Quantity</th>
+                <th></th>
 
             </tr>
             <% if(data.length){
                 for (var i = 0; i < data.length; i++) { %>
-    <!-- error here -->
                 <tr>
                     <td><%=(i+1)%></td>
-                    <td><%=data[i].id%></td>
+                    <td><%=data[i].productID%></td>
                     <td><%=data[i].manufacturerName%></td>
                     <td><%=data[i].name%></td>
                     <td><%=data[i].model%></td>
                     <td><%=data[i].quantity%></td>
+                    <td>
+                        <a class="a-inside edit" href="/items/edit/<%=data[i].productID %>">Edit</a>
+                        <a class="a-inside edit" href="/items/delete/<%=data[i].productID %>">Delete</a>
+                    </td>
                 </tr>
 
                 <%  }

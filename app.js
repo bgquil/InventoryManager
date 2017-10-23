@@ -19,9 +19,6 @@ const db = mysql.createConnection({
 	database	: 'Inventory'
 });
 
-
-
-
 // View Engine 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -29,10 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-
 app.use(express.static(path.join(__dirname, 'public')))
-
-
 
 
 db.connect((err) => {
@@ -48,18 +42,22 @@ app.use((req, res, next) => {
 	next();
 });
 
-
-
 // Routing
 app.get('/', routes.index);
 app.get('/entry', entry.show );
+// Manufacturers
 app.get('/manufacturers', manufacturers.listManufacturers);
 app.post('/manufacturers/add', manufacturers.addManufacturer);
+app.get('/manufacturers/edit/:id', manufacturers.editManufacturer);
+app.get('/manufacturers/delete/:id', manufacturers.deleteManufacturer);
+// Items
 app.get('/items', items.listItems);
-app.post('/items/add', items.addItem);
-
-
-
+app.get('/items/add', items.add);
+app.get('/items/search', items.searchRedirect);
+app.post('/items/search', items.searchItems);
+app.get('/items/edit/:id', items.editItem);
+app.post('/items/edit/:id',items.applyEdit);
+// app.post('/items', items.searchItems);
 
 /* 
 Error Routing
@@ -75,7 +73,6 @@ app.use((req, res) =>{
 	res.status(500);
 	res.render('500.ejs', {title: '500'});
    });
-
 
 
 app.listen(3000, function(){

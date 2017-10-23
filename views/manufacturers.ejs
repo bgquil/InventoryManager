@@ -20,14 +20,19 @@
             <tr>
                 <th>Manufacturer ID</th>
                 <th>Name</th>
+                <th></th>
         </tr>
         </thead>
         <% if(data.length){
             for (var i = 0; i < data.length; i++) { %>
 
             <tr>
-                <td><%=(i+1)%></td>
+                <td><%=data[i].manufacturerID%></td>
                 <td><%=data[i].manufacturerName%></td>
+                <td>
+                    <a class="a-inside edit" href="/manufacturers/edit/<%=data[i].manufacturerID%>">Edit</a>
+                    <a class="a-inside delete" href="/manufacturers/delete/<%=data[i].manufacturerID%>">Delete</a>
+                </td>
             </tr>
 
             <%  }

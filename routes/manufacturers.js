@@ -2,16 +2,23 @@
 
 
 exports.listManufacturers = (req, res) => {
-    let sql = 'SELECT * FROM inventory.manufacturers;';
+    const sql = 'SELECT * FROM inventory.manufacturers;';
     req.db.query(sql, (err, result) => {
         if (err) throw err;
-        console.log(result);
+        //console.log(result);
         res.render('manufacturers', {
             title: 'manufacturers',
              data: result
             });
     });
 
+};
+
+exports.getManufacturers = (req, res) => {
+    const sql = 'SELECT * FROM inventory.manufacturers;';
+    req.db.query(sql, (err, result) => {
+        
+    });
 };
 
 
@@ -21,14 +28,37 @@ exports.listManufacturers = (req, res) => {
  *
  */
 exports.addManufacturer = (req, res) => {
-    let stmt = "INSERT INTO inventory.manufacturers SET ?"
-    var input = JSON.parse(JSON.stringify(req.body));
-    var object = { manufacturerName: input.manufacturerName };
+    const stmt = "INSERT INTO inventory.manufacturers SET ?";
+    let input = JSON.parse(JSON.stringify(req.body));
+    let object = { manufacturerName: input.manufacturerName };
 
     req.db.query(stmt, object, (err, rows) => {
         if (err)
             console.log("Error inserting new manufacturer: %s", err);
-        res.redirect('/manufacturers');
+        
     });
+    res.redirect('/manufacturers');
 };
 
+exports.deleteManufacturer = (req, res) => {
+    const stmt = "DELETE FROM inventory.manufacturers WHERE id = ?";
+    let id = parseInt(req.params.id, 10);
+
+    if (id === parseInt(id, 10))
+    req.db.query(stmt, id, (err, rows) => {
+        if (err)
+            console.log("Error deleting manufacturer: %s", err);
+    });
+    else
+        console.log("%s is not a proper ID for deletion.", id);
+    res.redirect('/manufacturers');
+};
+
+exports.editManufacturer = (req, res) => {
+
+    const stmt = ""
+    console.log("edit request on "+req.params.id);
+    res.redirect('/manufacturers');
+
+
+};
