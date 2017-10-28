@@ -8,7 +8,7 @@ exports.listManufacturers = (req, res) => {
         //console.log(result);
         res.render('manufacturers', {
             title: 'manufacturers',
-             data: result
+             manufacturerData: result
             });
     });
 
@@ -17,7 +17,8 @@ exports.listManufacturers = (req, res) => {
 exports.getManufacturers = (req, res) => {
     const sql = 'SELECT * FROM inventory.manufacturers;';
     req.db.query(sql, (err, result) => {
-        
+        if (err) throw err;
+        return result;
     });
 };
 
@@ -62,3 +63,8 @@ exports.editManufacturer = (req, res) => {
 
 
 };
+
+const updateManufacturers = (data) => {
+    let table = document.getElementById("table_manufacturers");
+    table.innerHTML = data;
+}

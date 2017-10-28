@@ -15,7 +15,7 @@
 </div>
 
 <div class ="container">
-    <table class="table  table-bordered table-hover">
+    <table class="table  table-bordered table-hover"  id="table_manufacturers">
         <thead class="thead-inverse">
             <tr>
                 <th>Manufacturer ID</th>
@@ -23,15 +23,15 @@
                 <th></th>
         </tr>
         </thead>
-        <% if(data.length){
-            for (var i = 0; i < data.length; i++) { %>
+        <% if(manufacturerData.length){
+            for (var i = 0; i < manufacturerData.length; i++) { %>
 
             <tr>
-                <td><%=data[i].manufacturerID%></td>
-                <td><%=data[i].manufacturerName%></td>
+                <td><%=manufacturerData[i].manufacturerID%></td>
+                <td><%=manufacturerData[i].manufacturerName%></td>
                 <td>
-                    <a class="a-inside edit" href="/manufacturers/edit/<%=data[i].manufacturerID%>">Edit</a>
-                    <a class="a-inside delete" href="/manufacturers/delete/<%=data[i].manufacturerID%>">Delete</a>
+                    <a class="a-inside edit" href="/manufacturers/edit/<%=manufacturerData[i].manufacturerID%>">Edit</a>
+                    <a class="a-inside delete" href="/manufacturers/delete/<%=manufacturerData[i].manufacturerID%>">Delete</a>
                 </td>
             </tr>
 

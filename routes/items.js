@@ -1,5 +1,4 @@
 
-
 exports.listItems = (req, res) => {
     // let sql = 'SELECT * FROM inventory.items;';
     let stmt = 'SELECT * FROM items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID';
@@ -43,10 +42,19 @@ exports.searchRedirect = (req, res) => {
     res.redirect('/items');
 };
 
+// Render add item page
 exports.add = (req, res) => {
-    res.render('add_item', {title: "Add Item"});
-};
+    let stmt = "SELECT * FROM inventory.manufacturers;"
+    req.db.query(stmt, (err, result) => {
+        if (err) throw err;
+        res.render('add_item', {
+            title: 'Add Item',
+            manufacturerData: result
+            });
+    });
 
+};
+ 
 
 /*
  * Add an item to the database.
@@ -56,18 +64,19 @@ exports.addItem = (req, res) => {
     let stmt = "INSERT INTO inventory.items SET ?"
     let input = JSON.parse(JSON.stringify(req.body));
     let object = { 
-        manufacturerID_fk: input.manufacturer_id, //examine
+        manufacturerID: input.manufacturer_id, //examine
         name: input.name,
         model: input.model,
         weight: input.weight,
         price: input.price,
         quantity: input.quantity
      };
-
-    req.db.query(stmt, object, (err, rows) => {
-        if (err)
-            console.log("Error inserting new item: %s", err);
-    });
+     
+    // TODO: NOT WORKING
+    // req.db.query(stmt, object, (err, rows) => {
+    //     if (err)
+    //         console.log("Error inserting new item: %s", err);
+    // });
     res.redirect('/items');
 };
 

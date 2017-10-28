@@ -6,7 +6,16 @@
     <form method="POST" action="/items/add">
         <div class="form-group">
             <label for="manufacturer">Manufacturer</label>
-            <input type="text" class="form-control" id="manufacturer" placeholder="Manufacturer" name="manufacturer_id">
+            <select class="form-control" id="manufacturer" name="manufacturer">
+              <% if(manufacturerData.length){
+                for (var i = 0; i < manufacturerData.length; i++) { %>
+                <option><%=manufacturerData[i].manufacturerName+' ID: '+manufacturerData[i].manufacturerID %></option> -->
+              <%  }
+            }else{ %>
+             <option>Error</option>
+          <% } %>
+            </select>
+            <!-- <input type="text" class="form-control" id="manufacturer" placeholder="Manufacturer" name="manufacturer_id"> -->
         </div>
         <div class="form-group">
             <label for="name">Name</label>

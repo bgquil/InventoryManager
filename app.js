@@ -1,39 +1,33 @@
-const express = require('express');
-const mysql = require('mysql');
-var bodyParser = require('express');
-var path = require('path');
-var routes = require('./routes');
 
-// Routes
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const routes = require('./routes');
+const dbConfig = require('./config/db.js');
+
 const entry = require('./routes/entry');
 const manufacturers = require('./routes/manufacturers');
 const items = require('./routes/items');
-
+const orders = require('./routes/orders');
 var app = express();
 
-const db = mysql.createConnection({
-	host		: 'localhost',
-	user		: 'root',
-	password	: 'abc123',
-	port		:  3306,
-	database	: 'Inventory'
-});
 
 // View Engine 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-
+const db = dbConfig.dbConnection;
+// Test Connection
 db.connect((err) => {
-	if (err){
+	if (err)
 		throw err;
-	}
-	console.log('MySQL connection established.');
+	console.log('Connected to MySQL database');
 });
 
 // Make db accessible to routing.
@@ -42,7 +36,10 @@ app.use((req, res, next) => {
 	next();
 });
 
+
+
 // Routing
+
 app.get('/', routes.index);
 app.get('/entry', entry.show );
 // Manufacturers
@@ -58,6 +55,10 @@ app.post('/items/search', items.searchItems);
 app.get('/items/edit/:id', items.editItem);
 app.post('/items/edit/:id',items.applyEdit);
 // app.post('/items', items.searchItems);
+
+// Orders
+app.get('/orders', orders.listOrders);
+// app.post('orders/')
 
 /* 
 Error Routing
@@ -75,6 +76,8 @@ app.use((req, res) =>{
    });
 
 
+
+
 app.listen(3000, function(){
-	console.log('Server started.\n listening on port 3000');
+	console.log('Server started.\n Listening on port 3000');
 });

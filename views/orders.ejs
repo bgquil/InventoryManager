@@ -1,0 +1,43 @@
+<%include partials/header.ejs %>
+
+
+<div class="container">
+    <h1><%= title %></h1>
+    <form action="/orders/search" method="POST" class="form-inline">
+    
+        
+    </form>
+
+</div>
+
+<div class="container">
+    <div class="data-table">
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Order ID</th>
+                <th>Date</th>
+            </tr>
+            <% if (orderData.length){
+                for (let i = 0; i < data.length; i++) { %>
+                    <tr>
+                        <td><%=(i+1)%></td>
+                        <td><%=orderData[i].orderID%></td>
+                        <td><%=orderData[i].orderDateTime%></td>
+                        <td>
+                            <a class="a-inside edit" href="#">Placeholder</a>
+                            <a class="a-inside edit" href="#">Placeholder</a>
+                        </td>
+                    </tr>
+                <% } 
+            } else { %>
+                <tr>
+                    <td colspan="4">No Data</td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+
+</div>
+
+<%include partials/footer.ejs %>
