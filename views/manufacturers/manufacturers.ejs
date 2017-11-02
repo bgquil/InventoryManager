@@ -1,14 +1,14 @@
-<%include partials/header.ejs %>
+<%include ../partials/header.ejs %>
 
 <div class="container">
     <h3>Add Manufacturer</h3>
-        <form method="POST" action="/manufacturers/add">
+        <form method="POST" id="manufacturer_form_add" action="/manufacturers/add">
             <div class="form-group"></div>
             <label for="manufacturerName">Name</label>
             <input type="manufacturerName" class="form-control" id="manufacturerName" placeholder="Enter Manufacturer Name" name="manufacturerName">
             <div></div>
             <br>
-            <button type="submit" class="btn btn-primary">Add Manufacturer</button>
+            <button type="submit" class="btn btn-primary" id="add_manufacturer_btn">Add Manufacturer</button>
         </form>
     </div>
     <br>
@@ -21,8 +21,9 @@
                 <th>Manufacturer ID</th>
                 <th>Name</th>
                 <th></th>
-        </tr>
+            </tr>
         </thead>
+        <tbody id="manufacturers_table_body">
         <% if(manufacturerData.length){
             for (var i = 0; i < manufacturerData.length; i++) { %>
 
@@ -42,7 +43,10 @@
             </tr>
 
         <% } %>
-
+    </tbody>
     </table>
 </div>
-<%include partials/footer.ejs %>
+
+
+
+<%include ../partials/footer.ejs %>

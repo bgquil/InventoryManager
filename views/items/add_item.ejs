@@ -1,4 +1,4 @@
-<%include partials/header %>
+<%include ../partials/header %>
 
 
 <div class="container">
@@ -6,10 +6,10 @@
     <form method="POST" action="/items/add">
         <div class="form-group">
             <label for="manufacturer">Manufacturer</label>
-            <select class="form-control" id="manufacturer" name="manufacturer">
+            <select class="form-control" id="manufacturer" name="manufacturerID">
               <% if(manufacturerData.length){
                 for (var i = 0; i < manufacturerData.length; i++) { %>
-                <option><%=manufacturerData[i].manufacturerName+' ID: '+manufacturerData[i].manufacturerID %></option> -->
+                <option value="<%=manufacturerData[i].manufacturerID%>"><%=manufacturerData[i].manufacturerName+' ID: '+manufacturerData[i].manufacturerID %></option> -->
               <%  }
             }else{ %>
              <option>Error</option>
@@ -42,4 +42,4 @@
     </div>
     </div>
     <br>
-<%include partials/footer %>
+<%include ../partials/footer %>

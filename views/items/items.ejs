@@ -1,64 +1,68 @@
-<%include partials/header.ejs %>
+<%include ../partials/header.ejs %>
 
 <div class="container">
     <a class="btn btn-primary" href="/items/add">Add Item</a>
 </div>
 <br>
+<br>
+
 
 <div class="container">
     <h3>Search</h3>
-    <form action="/items/search" method="POST" class="form-inline">
+    <form action="/items/search" id="items_search_form" method="POST" class="form-inline" >
         <div class = "form-group">
             <label for="searchBy">Search by </label>
-            <select class="form-control" id="searchBy" name="searchBy">
+            <select class="form-control" id="itemSearchType" name="itemSearchType">
                 <option>Manufacturer</option>
                 <option>Name</option>
                 <option>Model</option>
             </select>
-            <input type="text" class="form-control" name="searchQuery" id="searchQuery">
+            <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
 </div>
+<br>
+<br>
 
 <div class="container">
     <div class = "data-table">
         <table class ="table table-striped" id="table_items">
-            <tr>
-                <th>Row #</th>
-                <th>ID</th>
-                <th>Manufacturer</th>
-                <th>Name</th>
-                <th>Model</th>
-                <th>Quantity</th>
-                <th></th>
+            <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Manufacturer</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th></th>
 
-            </tr>
+                </tr>
+            </thead>
+            <tbody id="items_table_body">
             <% if(data.length){
                 for (var i = 0; i < data.length; i++) { %>
                 <tr>
                     <td><%=(i+1)%></td>
-                    <td><%=data[i].productID%></td>
+                    <td><%=data[i].itemID%></td>
                     <td><%=data[i].manufacturerName%></td>
                     <td><%=data[i].name%></td>
                     <td><%=data[i].model%></td>
                     <td><%=data[i].quantity%></td>
                     <td>
-                        <a class="a-inside edit" href="/items/edit/<%=data[i].productID %>">Edit</a>
-                        <a class="a-inside edit" href="/items/delete/<%=data[i].productID %>">Delete</a>
+                        <a class="a-inside edit" href="/items/edit/<%=data[i].itemID %>">Edit</a>
+                        <a class="a-inside edit" href="/items/delete/<%=data[i].itemID %>">Delete</a>
                     </td>
                 </tr>
 
                 <%  }
             }else{ %>
-                <tr>
-                    <td colspan="3">No user</td>
-                </tr>
 
             <% } %>
-
+            </tbody>
         </table>
     </div>
 
 </div>
-<%include partials/footer.ejs %>
+<%include ../partials/footer.ejs %>

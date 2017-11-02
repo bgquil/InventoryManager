@@ -1,0 +1,57 @@
+<%include ../partials/header.ejs %>
+
+    <h1><%= title %></h1>
+
+
+
+<div class="container">
+        <h3>Search</h3>
+        <form action="/items/search" id="items_search_order_form" method="POST" class="form-inline" >
+            <div class = "form-group">
+                <label for="searchBy">Search by </label>
+                <select class="form-control" id="itemSearchType" name="itemSearchType">
+                    <option>Manufacturer</option>
+                    <option>Name</option>
+                    <option>Model</option>
+                </select>
+                <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+    </div>
+    <br>
+    <br>
+    
+
+<div class="container">
+        <div class = "data-table">
+            <table class ="table table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Manufacturer</th>
+                        <th>Name</th>
+                        <th>Model</th>
+                        <th>Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="order_items-table-body" >
+
+                </tbody>
+            </table>
+        </div>
+    
+    </div>
+
+<script>
+    let orderList = [];
+    let addToOrderList = (item) => {
+        orderList.push(item);
+        console.log(item.itemID);
+    };
+</script>
+
+<%include ../partials/footer.ejs %>
