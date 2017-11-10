@@ -1,26 +1,24 @@
+// Import database connection
+const db = require('../config/db');
+const manufacturers = require('./manufacturers');
+
 
 // Render the items main view
-exports.itemsMain = (req, res) => {
+exports.renderItemsMain = (req, res) => {
     let stmt = 'SELECT * FROM items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID';
     
-    req.db.query(stmt, (err, result) => {
-        if (err) 
-            console.log(err);
-        //console.log(result);
-        res.render('items/items.ejs', {
-            title: 'Manage Items',
-            data: result
-        });
+    db.query(stmt, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        else {
+            res.render('items/items.ejs', {
+                title: 'Manage Items',
+                data: result
+            });
+        }
     });
 };
-
-exports.renderItemsLanding = (req, res) => {
-    res.render('items/items', {
-        title: 'Manage Items',
-        data: {}
-    });
-};
-
 
 exports.searchItems = (req, res) => {
     const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE ?? = ?';
@@ -42,7 +40,7 @@ exports.searchItems = (req, res) => {
 
     const placeVals = [searchType, searchString];
     
-    req.db.query(stmt, placeVals , (err, result) => {
+    db.query(stmt, placeVals , (err, result) => {
         if (err)
             console.log(err);
         res.send({searchData: result});
@@ -52,8 +50,8 @@ exports.searchItems = (req, res) => {
 
 // Render add item page
 exports.add = (req, res) => {
-    let stmt = "SELECT * FROM inventory.manufacturers;"
-    req.db.query(stmt, (err, result) => {
+    const stmt = "SELECT * FROM inventory.manufacturers ORDER BY manufacturerName;"
+    db.query(stmt, (err, result) => {
         if (err) throw err;
         res.render('items/add_item', {
             title: 'Add Item',
@@ -69,7 +67,6 @@ exports.addItem = (req, res) => {
     let stmt = "INSERT INTO inventory.items SET ?"
     let input = JSON.parse(JSON.stringify(req.body));
 
-    console.log(input.manufacturerID);
     let object = { 
         manufacturerID: input.manufacturerID, //examine
         name: input.name,
@@ -79,7 +76,7 @@ exports.addItem = (req, res) => {
         quantity: input.quantity
      };
      
-    req.db.query(stmt, object, (err, rows) => {
+    db.query(stmt, object, (err, rows) => {
         if (err)
             console.log("Error inserting new item: %s", err);
     });
@@ -93,22 +90,86 @@ exports.removeItem = (req, res) => {
 
 
 exports.editItem = (req, res) => {
-    let stmt = 'SELECT * FROM items INNER JOIN manufacturers ON items.manufacturerID_FK = manufacturers.id';
-    
-    req.db.query(stmt, (err, result) => {
-        if (err) 
-            console.log(err);
-        res.render('items/edit_item', {
-            title: 'Edit Item',
-            data: result
-        });
+    // const stmt = 'SELECT * FROM items INNER JOIN\
+    //     manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE itemID = ?';
+    // const stmt2 = "SELECT * FROM inventory.manufacturers ORDER BY manufacturerName;"
+    // manufacturers = null;
+    // db.query(stmt2, (err, result) => {
+    //     if (err) throw err;
+    //         manufacturers = result;
+            
+    // });
+
+    getItem(req.params.id, (err, item) => {
+        if (err) {
+            throw err;
+        }
+        else {
+            manufacturers.getManufacturerList((err, mList) => {
+                if (err) {
+                    throw err;
+                }
+                else {
+                    res.render('items/edit_item', {
+                        title: 'Edit Item',
+                        itemData: item,
+                        manufacturerData : mList
+                    });
+                }
+            });
+        }
     });
-
-
 };
 
 exports.applyEdit = (req, res) => {
+    const stmt = "UPDATE items SET ? WHERE itemID=?"
+    let input = JSON.parse(JSON.stringify(req.body));
+    item = {
+        manufacturerID : input.manufacturerID,
+        name : input.name,
+        model : input.model,
+        weight : input.weight, 
+        price : input.price,
+        quantity : input.quantity,
+    };
 
-    console.log(res.data);
+    db.query(stmt, [item, input.itemID] , (err, result) => {
+        if(err)
+            throw err;
+        res.redirect('/items');
+    });
 
+};
+
+// Render delete confirmation view
+exports.renderDelete = (req, res) => {
+    const stmt = 'SELECT * FROM items INNER JOIN\
+        manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE itemID = ?';
+
+    db.query(stmt, req.params.id, (err, result) => {
+        if (err) throw err;
+        res.render('items/delete_item', {
+            title: 'Delete Item',
+            itemData: result,
+        });
+    });
+
+};
+
+// Apply deletion to database
+exports.applyDelete = (req, res) => {
+    let stmt = '';
+
+    console.log('apply deletion');
+
+};
+
+const getItem = (id, callback) => {
+    const stmt = 'SELECT * FROM items WHERE itemID = ?';
+    db.query(stmt, id, (err, result) => {
+        if (err) 
+            callback(err, null);
+        else  
+            callback(null, result);
+    });
 };

@@ -1,53 +1,52 @@
 <%include ../partials/header %>
-<!-- 
-
-<!-- <% if(data.length){
-  for (var i = 0; i < data.length; i++) { %>
-  <tr>
-      <td><%=data[i].id%></td>
-      <td><%=data[i].manufacturerName%></td>
-      <td><%=data[i].name%></td>
-      <td><%=data[i].model%></td>
-      <td><%=data[i].quantity%></td>
-      <td>
-          <a class="a-inside edit" href="/items/delete/<%=data[i].id %>">Delete</a>
-      </td>
-  </tr>
-
-  <%  }
-}else{ % -->
 
 
 <div class="container">
     
-    <form method="POST" action="/items/<%=data[0].id%>">
-        <!-- <div class="form-group">
-            <label for="manufacturer">Manufacturer</label>
-            <input type="text" class="form-control" id="manufacturer" placeholder="<%=data[0].manufacturerName%>" name="manufacturer_id">
-        </div>
+    <form method="POST" action="/items/edit/<%=itemData[0].itemID%>">
+      <div class="form-group">
+        <label for="itemID">Item ID</label>
+        <input type="text" class="form-control" id="manufacturer" value="<%=itemData[0].itemID%>" name="itemID" readonly>
+      </div>
+      <div class="form-group">
+          <label for="manufacturer">Manufacturer</label>
+          <select class="form-control" id="manufacturer" name="manufacturerID">
+            <% if(manufacturerData.length){ %>
+              <%  for (var i = 0; i < manufacturerData.length; i++) { %>
+                <% if (manufacturerData[i].manufacturerID === itemData[0].manufacturerID) { %>
+                  <option value="<%=manufacturerData[i].manufacturerID%>" selected><%=manufacturerData[i].manufacturerName%></option>
+                  <% } %>
+                <% if (manufacturerData[i].manufacturerID != itemData[0].manufacturerID) { %>
+                  <option value="<%=manufacturerData[i].manufacturerID%>" ><%=manufacturerData[i].manufacturerName%></option>
+                <% } %>
+              <%  } %>
+            <% } %>
+          </select>
+          <!-- <input type="text" class="form-control" id="manufacturer" placeholder="Manufacturer" name="manufacturer_id"> -->
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" value="<%=itemData[0].name%>" name="name">
+      </div>
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="<%=data[0].name%>" name="name">
-          </div>
-          <div class="form-group">
-            <label for="model">Model</label>
-            <input type="text" class="form-control" id="model" placeholder="<%=data[0].model%>" name="model">
-          </div>
-          <div class="form-group">
-            <label for="weight">Weight</label>
-            <input type="text" class="form-control" id="weight" placeholder="<%=data[0].weight%>" name="weight">
-          </div>
-          <div class="form-group">
-            <label for="price">Price</label>
-            <input type="text" class="form-control" id="price" placeholder="<%=data[0].price%>" name="price">
-          </div>        
-          <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" id="quantity" placeholder="<%=data[0].quantity%>" name="quantity">
-          </div>
-        <input type="submit" value="Apply Changes to Item" class="btn btn-primary">
-    </div>  -->
+        <label for="model">Model</label>
+        <input type="text" class="form-control" id="model" value="<%=itemData[0].model%>" name="model">
+        </div>
+      <div class="form-group">
+        <label for="weight">Weight</label>
+        <input type="number" class="form-control" id="weight" value="<%=itemData[0].weight%>" name="weight">
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control" id="price" value="<%=itemData[0].price%>" name="price">
+      </div>        
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" class="form-control" id="quantity" value="<%=itemData[0].quantity%>" name="quantity">
+      </div>
+      <input type="submit" value="Apply Changes to Item" class="btn btn-primary">
+    </div> 
     </div>
     </div>
-    <br> -->
+    <br>
 <%include ../partials/footer %>

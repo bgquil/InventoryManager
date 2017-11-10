@@ -1,10 +1,11 @@
-
+// Import database connection
+const db = require('../config/db');
 
 // Render orders main page.
 exports.listOrders = (req, res) => {
     const stmt = 'SELECT * FROM inventory.orders';
     
-    req.db.query(stmt, (err, result) => {
+    db.query(stmt, (err, result) => {
         if (err)
             console.log(err);
         res.render('orders/orders', {title :'Orders', orderData : result});
@@ -13,15 +14,47 @@ exports.listOrders = (req, res) => {
 };
 
 exports.createOrder = (req, res) => {
-    res.render('orders/create_order', {title: 'Create Order'});
+    res.render('orders/create_order', {title: 'Create Order'})
 };
 
-exports.applyOrder = (req, res) => {
+exports.completeOrder = (req, res) => {
+    let orderList = JSON.parse(JSON.stringify(req.body));
+ 
+    // need to count total number of items
+    const orderStmt = 'call insert_order(?)';
+    const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
+    
+
+    db.query(orderStmt, 10 , (err, result) => {
+        const orderID = result[0][0].orderID;
+        orderList.forEach( (order_item) =>{
+            const values = [orderID, order_item.itemID, order_item.quantity]
+            console.log(values);
+            db.query(itemStmt, values, (err, result) => {
+                if (err) {
+                    throw err;
+                }
+            });
+        });
+        res.redirect('/orders');
+    });
+
+    
+    
+};
+
+let generateNewOrder = (quantity) => {
 
 };
+
 
 exports.viewOrder = (req, res) => {
-    const itemStmt = 'SELECT * FROM order_item INNER JOIN orders ON orders.OrderID = order_item.OrderID INNER JOIN items ON order_item.itemID = items.itemID  WHERE order_item.orderID = ?'
+    const itemStmt =   'SELECT * FROM order_item\
+                        INNER JOIN orders ON orders.OrderID = order_item.OrderID\
+                        INNER JOIN items ON order_item.itemID = items.itemID\
+                        INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID\
+                        WHERE order_item.orderID = ?'
+
     const orderStmt = 'SELECT * FROM orders WHERE orderID = ?'
     
     let orderID = parseInt(req.params.id, 10);
@@ -29,26 +62,25 @@ exports.viewOrder = (req, res) => {
     let itemsResult = {};
     let orderResult = {};
 
-    if (orderID === parseInt(orderID, 10)){
-
-        req.db.query(itemStmt, orderID, (err, itemsResult) => {
-            if (err)
+    if (orderID === parseInt(orderID, 10)) {
+        db.query(itemStmt, orderID, (err, itemsResult) => {
+            if (err){
                 throw(err);
-            console.log(itemsResult);
-
-            // res.render('orders/view_order', {title: 'Order View', itemData : itemsResult });
+            }
+            else {
+                db.query(orderStmt, orderID, (err, orderResult) => {
+                    if (err) {
+                        throw(err);
+                    }
+                    else {
+                    console.log(itemsResult);
+                    res.render('orders/view_order', {title: 'Order View', orderData: orderResult, itemData : itemsResult });
+                    }
+                });
+            }
         });
-
-        req.db.query(orderStmt, orderID, (err, orderResult) => {
-            if (err)
-                throw(err);
-            console.log(orderResult);
-        });
-
-        res.render('orders/view_order', {title: 'Order View', orderData: orderResult, itemData : itemsResult });
     }
-    else{
+    else {
         console.log('%s is not a proper order ID.', orderID);
     }
-    
 };

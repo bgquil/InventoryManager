@@ -9,7 +9,7 @@
             <select class="form-control" id="manufacturer" name="manufacturerID">
               <% if(manufacturerData.length){
                 for (var i = 0; i < manufacturerData.length; i++) { %>
-                <option value="<%=manufacturerData[i].manufacturerID%>"><%=manufacturerData[i].manufacturerName+' ID: '+manufacturerData[i].manufacturerID %></option> -->
+                <option value="<%=manufacturerData[i].manufacturerID%>"><%=manufacturerData[i].manufacturerName%></option> -->
               <%  }
             }else{ %>
              <option>Error</option>
@@ -27,17 +27,18 @@
           </div>
           <div class="form-group">
             <label for="weight">Weight</label>
-            <input type="text" class="form-control" id="weight" placeholder="Weight" name="weight">
+            <input type="number" class="form-control" id="weight" placeholder="Weight" name="weight">
           </div>
           <div class="form-group">
             <label for="price">Price</label>
-            <input type="text" class="form-control" id="price" placeholder="Price" name="price">
+            <input type="number" class="form-control" id="price" placeholder="Price" name="price">
           </div>        
           <div class="form-group">
             <label for="quantity">Quantity</label>
             <input type="number" class="form-control" id="quantity" placeholder="" name="quantity">
           </div>
         <input type="submit" value="Add New Item" class="btn btn-primary">
+        <a href="/items" class="btn btn-secondary">Cancel</a></btn>
     </div> 
     </div>
     </div>

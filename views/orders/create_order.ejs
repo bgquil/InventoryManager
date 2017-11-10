@@ -1,57 +1,69 @@
 <%include ../partials/header.ejs %>
 
+
+<div class="container">
     <h1><%= title %></h1>
-
-
-
-<div class="container">
-        <h3>Search</h3>
-        <form action="/items/search" id="items_search_order_form" method="POST" class="form-inline" >
-            <div class = "form-group">
-                <label for="searchBy">Search by </label>
-                <select class="form-control" id="itemSearchType" name="itemSearchType">
-                    <option>Manufacturer</option>
-                    <option>Name</option>
-                    <option>Model</option>
-                </select>
-                <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-
-    </div>
-    <br>
-    <br>
+    <btn class="btn btn-success float-right" id="order-complete-button">Complete Order</btn>
+</div>
+<br>
     
+<div class="container">
+    <div class="data-table">
+        <table class="table table-striped">
+            <thead class = "thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>Item ID</th>
+                    <th>Manufacturer</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="order_items-list">
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+<br>
+<br>
+
 
 <div class="container">
-        <div class = "data-table">
-            <table class ="table table-striped">
-                <thead class="thead-inverse">
-                    <tr>
-                        <th>#</th>
-                        <th>ID</th>
-                        <th>Manufacturer</th>
-                        <th>Name</th>
-                        <th>Model</th>
-                        <th>Quantity</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody class="order_items-table-body" >
-
-                </tbody>
-            </table>
+    <form action="/items/search" id="items_search_order_form" method="POST" class="form-inline" >
+        <div class = "form-group">
+            <label for="searchBy">Search by </label>
+            <select class="form-control" id="itemSearchType" name="itemSearchType">
+                <option>Manufacturer</option>
+                <option>Name</option>
+                <option>Model</option>
+            </select>
+            <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-    
-    </div>
+    </form>
 
-<script>
-    let orderList = [];
-    let addToOrderList = (item) => {
-        orderList.push(item);
-        console.log(item.itemID);
-    };
-</script>
+    <div class = "data-table">
+        <table class ="table table-striped">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Manufacturer</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="order_items-table-body" >
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
 <%include ../partials/footer.ejs %>

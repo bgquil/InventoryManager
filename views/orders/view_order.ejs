@@ -2,9 +2,11 @@
 
 <div class="container">
     <h1><%=title%></h1>
-    <h3>Order ID:<%=orderData.orderID %></h3>
-    <h3>Quantity: <%=orderData.totalQuantity %></h3>
-    <h3>Time:</h3>
+    <button class="btn btn-primary float-right">Print</button> 
+    <h4>Order ID:<%=orderData[0].orderID %></h3>
+    <h4>Quantity: <%=orderData[0].totalQuantity %></h3>
+    <h4>Time: <%=orderData[0].orderTime %></h3>
+    <br>
     <div class="data-table">
         <table class="table table-striped">
             <thead class="thead-inverse">
@@ -14,7 +16,7 @@
                     <th>Manufacturer</th>
                     <th>Name</th>
                     <th>Model</th>
-                    <th>Quantity Available</th>
+                    <th>Quantity</th>
                     <th></th>
 
                 </tr>
@@ -25,6 +27,11 @@
                     for (var i = 0; i < itemData.length; i++) { %>
                     <tr>
                         <td><%=(i+1)%></td>
+                        <td><%=itemData[i].itemID%></td>
+                        <td><%=itemData[i].manufacturerName%></td>
+                        <td><%=itemData[i].name%></td>
+                        <td><%=itemData[i].model%></td>
+                        <td><%=itemData[i].quantityOrdered%></td>
                     </tr>
     
                     <%  }
