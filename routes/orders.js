@@ -13,6 +13,21 @@ exports.listOrders = (req, res) => {
     
 };
 
+exports.listRecentOrders = (req, res) => {
+    stmt = 'SELECT * FROM inventory.orders\
+    WHERE orderTime >= DATE(NOW()) - INTERVAL 1 WEEK\
+    ORDER BY ordertime DESC';
+
+    db.query(stmt, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        else {
+            res.render('orders/orders', {title :'Recent Orders', orderData : result});
+        }
+    });
+};
+
 exports.createOrder = (req, res) => {
     res.render('orders/create_order', {title: 'Create Order'})
 };
@@ -38,14 +53,8 @@ exports.completeOrder = (req, res) => {
         });
         res.redirect('/orders');
     });
-
-    
-    
 };
 
-let generateNewOrder = (quantity) => {
-
-};
 
 
 exports.viewOrder = (req, res) => {
