@@ -119,8 +119,9 @@ $(() => {
     let addToOrderList = (item) => {
         // findIndex may not work for older browsers.
         let index = orderList.findIndex(i => i.itemID === item.itemID);
-        if ( index < 0 )
+        if ( index < 0 ) {
             orderList.push(item);
+        }
         
         else
             orderList[index].quantity += item.quantity;
@@ -196,7 +197,7 @@ $(() => {
                 <td class="itemModel">' + item.model + '</td>\
                 <td class="quantity-available">' + item.quantity + '</td>\
                 <td>\
-                    <input class="add-item-quantity" type="text" placeholder="1" >\
+                    <input class="add-item-quantity" type="number" placeholder="1" >\
                     <button class="btn btn-primary add-item-button">Add Item</button>\
                 </td>\
             </tr>\
@@ -213,22 +214,25 @@ $(() => {
         let manuf = row.find('.itemManufacturer').text();
         let name = row.find('.itemName').text();
         let model = row.find('.itemModel').text();
-        let quantityAvailable = row.find('quantity-available').text();
+        let quantityAvailable = parseInt(row.find('.quantity-available').text());
         let quantity = parseInt(row.find('.add-item-quantity').val());
+        console.log(quantityAvailable);
 
-        if (typeof(quantity) == 'undefined'){
-            quantity = 1;
+
+        if ((quantity > 0) && (quantity <= quantityAvailable) ) {
+            addToOrderList({itemID: id,
+                manufacturerName: manuf,
+                name: name,
+                model: model,
+                quantity: quantity
+            });
         }
-        else if(quantity < 1){
+        else {
             throw NegativeQuantityError('Invalid Quantity');
         }
-        quantity = 1;
-        addToOrderList({itemID: id,
-            manufacturerName: manuf,
-            name: name,
-            model: model,
-            quantity: quantity
-        });
+            
+        
+        
     });
 
     $('#completeOrderButton').click( () => {

@@ -34,17 +34,18 @@ exports.createOrder = (req, res) => {
 
 exports.completeOrder = (req, res) => {
     let orderList = JSON.parse(JSON.stringify(req.body));
+
+    //order list length
  
     // need to count total number of items
     const orderStmt = 'call insert_order(?)';
     const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
-    
+
 
     db.query(orderStmt, 10 , (err, result) => {
         const orderID = result[0][0].orderID;
         orderList.forEach( (order_item) =>{
             const values = [orderID, order_item.itemID, order_item.quantity]
-            console.log(values);
             db.query(itemStmt, values, (err, result) => {
                 if (err) {
                     throw err;

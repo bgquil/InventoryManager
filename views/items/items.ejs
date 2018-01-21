@@ -8,23 +8,42 @@
 
 
 <div class="container">
-    <h3>Search</h3>
-    <form action="/items/search" id="items_search_form" method="POST" class="form-inline" >
-        <div class = "form-group">
-            <label for="searchBy">Search by </label>
-            <select class="form-control" id="itemSearchType" name="itemSearchType">
-                <option>Manufacturer</option>
-                <option>Name</option>
-                <option>Model</option>
-            </select>
-            <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
-            <button type="submit" class="btn btn-primary">Search</button>
+        <div class="row">
+          <div class="col">
+                <h3>Quick Search</h3>
+                <form action="/items/search" id="items_search_form" method="POST" class="form-inline" >
+                    <div class = "form-group">
+                        <label for="searchBy">Search by </label>
+                        <select class="form-control" id="itemSearchType" name="itemSearchType">
+                            <option>Manufacturer</option>
+                            <option>Name</option>
+                            <option>Model</option>
+                        </select>
+                        <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+          </div>
+          <div class="col">
+                <h3>List All Todo</h3>
+                <form action="/items/search" id="items_search_form" method="POST" class="form-inline" >
+                    <div class = "form-group">
+                        <label for="searchBy">Search by </label>
+                        <select class="form-control" id="itemSearchType" name="itemSearchType">
+                            <option>Manufacturer</option>
+                            <option>Name</option>
+                            <option>Model</option>
+                        </select>
+                        <input type="text" class="form-control" name="itemSearchString" id="itemSearchString">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+          </div>
         </div>
-    </form>
-</div>
-<br>
-<br>
+      </div>
 
+
+<br>
 <div class="container">
     <div class = "data-table">
         <table class ="table table-striped" id="table_items">

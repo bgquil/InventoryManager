@@ -2,7 +2,7 @@
 const db = require('../config/db');
 
 // Render the manufacturers main view.
-exports.manufacturersMain = (req, res) => {console.log('List request');
+exports.manufacturersMain = (req, res) => {
     const stmt = 'SELECT * FROM inventory.manufacturers;';
     db.query(stmt, (err, result) => {
         if (err) throw err;

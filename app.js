@@ -1,5 +1,6 @@
 
 
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -27,9 +28,15 @@ app.use('/client', express.static(__dirname + '/client'));
 
 app.get('/', routes.index);
 
+
+// API Routing
+app.use('/api/items', require('./api/routes/items'));
+app.use('/api/manufacturers', require('./api/routes/manufacturers'));
+app.use('/api/orders', require('./api//routes/orders'));
+
 // Manufacturers
 app.get('/manufacturers', manufacturers.manufacturersMain);
-app.get('/manufacturers/list', manufacturers.getManufacturers);
+app.get('/manufacturers/list', manufacturers.getManufacturers)
 app.post('/manufacturers/add', manufacturers.addManufacturer);
 app.get('/manufacturers/edit/:id', manufacturers.renderEdit);
 app.post('/manufacturers/edit/:id', manufacturers.editManufacturer);
@@ -43,7 +50,6 @@ app.get('/items/edit/:id', items.editItem);
 app.post('/items/edit/:id',items.applyEdit);
 app.get('/items/delete/:id', items.renderDelete);
 app.post('/items/delete/:id', items.applyDelete);
-
 // Orders
 app.get('/orders', orders.listRecentOrders);
 app.get('/orders/create', orders.createOrder);
