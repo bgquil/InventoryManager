@@ -1,5 +1,6 @@
 // Import database connection
 const db = require('../config/db');
+const manAPI = require('../api/controllers/manufacturersController');
 
 // Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
@@ -14,6 +15,21 @@ exports.manufacturersMain = (req, res) => {
     });
 
 };
+
+exports.manufacturersMain = (req, res) => {
+    
+        let val = manAPI.manufacturers_get_all(req, res);
+            console.log(val);
+    
+        
+        // res.render('manufacturers/manufacturers', 
+        //     title:'manufacturers',
+        //     manufacturerData: result 
+        // });
+    };
+
+
+
 
 // Query and send all manufacturers.
 exports.getManufacturers = (req, res) => {
