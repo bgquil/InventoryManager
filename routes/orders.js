@@ -1,35 +1,22 @@
 // Import database connection
 const db = require('../config/db');
 
-// Render orders main page.
+
 exports.listOrders = (req, res) => {
-  const stmt = 'SELECT * FROM inventory.orders';
-
-  db.query(stmt, (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-    res.render('orders/orders', { title: 'Orders', orderData: result });
-  });
+  exports.getRecentOrders().then((data) => {
+    res.render('orders/orders', { title: 'Orders', orderData: data });
+  }).catch((err) => setImmediate(() => { throw err; }));
 };
-
+// Render orders main page.
 exports.listRecentOrders = (req, res) => {
-  const stmt = 'SELECT * FROM inventory.orders\
-    WHERE orderTime >= DATE(NOW()) - INTERVAL 1 WEEK\
-    ORDER BY ordertime DESC';
-
-  db.query(stmt, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    else {
-      res.render('orders/orders', { title: 'Recent Orders', orderData: result });
-    }
-  });
+  exports.getRecentOrders().then((data) => {
+    res.render('orders/orders', { title: 'Recent Orders', orderData: data });
+  }).catch((err) => setImmediate(() => { throw err; }));
 };
 
+// Render create order page
 exports.createOrder = (req, res) => {
-  res.render('orders/create_order', { title: 'Create Order' })
+  res.render('orders/create_order', { title: 'Create Order' });
 };
 
 exports.completeOrder = (req, res) => {
@@ -42,10 +29,10 @@ exports.completeOrder = (req, res) => {
   const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
 
 
-  db.query(orderStmt, 10, (err, result) => {
+  db.query(orderStmt, orderList.length, (err, result) => {
     const orderID = result[0][0].orderID;
     orderList.forEach((orderItem) => {
-      const values = [orderID, orderItem.itemID, orderItem.quantity]
+      const values = [orderID, orderItem.itemID, orderItem.quantity];
       db.query(itemStmt, values, (err, result) => {
         if (err) {
           throw err;
@@ -81,7 +68,6 @@ exports.viewOrder = (req, res) => {
             throw (err);
           }
           else {
-            console.log(itemsResult);
             res.render('orders/view_order', { title: 'Order View', orderData: orderResult, itemData: itemsResult });
           }
         });
@@ -92,6 +78,10 @@ exports.viewOrder = (req, res) => {
     console.log('%s is not a proper order ID.', orderID);
   }
 };
+
+
+// Direct DB Queries
+//
 
 exports.getOrders = () => {
   return new Promise((resolve, reject) => {
@@ -110,6 +100,22 @@ exports.getRecentOrders = () => {
     const orderStmt = 'SELECT * FROM inventory.orders\
     WHERE orderTime >= DATE(NOW()) - INTERVAL 1 WEEK\
     ORDER BY ordertime DESC';
+    db.query(orderStmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.getOrders = (orderID) => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM order_item\
+    INNER JOIN orders ON orders.OrderID = order_item.OrderID\
+    INNER JOIN items ON order_item.itemID = items.itemID\
+    INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID\
+    WHERE order_item.orderID = ?'
     db.query(orderStmt, (err, result) => {
       if (err) {
         return reject(err);
