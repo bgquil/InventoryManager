@@ -44,8 +44,8 @@ exports.completeOrder = (req, res) => {
 
   db.query(orderStmt, 10, (err, result) => {
     const orderID = result[0][0].orderID;
-    orderList.forEach((order_item) => {
-      const values = [orderID, order_item.itemID, order_item.quantity]
+    orderList.forEach((orderItem) => {
+      const values = [orderID, orderItem.itemID, orderItem.quantity]
       db.query(itemStmt, values, (err, result) => {
         if (err) {
           throw err;
@@ -55,8 +55,6 @@ exports.completeOrder = (req, res) => {
     res.redirect('/orders');
   });
 };
-
-
 
 exports.viewOrder = (req, res) => {
   const itemStmt = 'SELECT * FROM order_item\
@@ -93,4 +91,30 @@ exports.viewOrder = (req, res) => {
   else {
     console.log('%s is not a proper order ID.', orderID);
   }
+};
+
+exports.getOrders = () => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM orders;';
+    db.query(orderStmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.getRecentOrders = () => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM inventory.orders\
+    WHERE orderTime >= DATE(NOW()) - INTERVAL 1 WEEK\
+    ORDER BY ordertime DESC';
+    db.query(orderStmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
 };

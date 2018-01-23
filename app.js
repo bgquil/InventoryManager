@@ -26,7 +26,7 @@ app.get('/', routes.index);
 
 // Manufacturers
 app.get('/manufacturers', manufacturers.manufacturersMain);
-app.get('/manufacturers/list', manufacturers.getManufacturers)
+app.get('/manufacturers/list', manufacturers.getManufacturers);
 app.post('/manufacturers/add', manufacturers.addManufacturer);
 app.get('/manufacturers/edit/:id', manufacturers.renderEdit);
 app.post('/manufacturers/edit/:id', manufacturers.editManufacturer);
