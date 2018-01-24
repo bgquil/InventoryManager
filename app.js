@@ -45,6 +45,7 @@ app.get('/orders', orders.listRecentOrders);
 app.get('/orders/create', orders.createOrder);
 app.post('/orders/complete', orders.completeOrder);
 app.get('/orders/view/:id', orders.viewOrder);
+app.get('/orders/fulfill/:orderID', orders.fulfillOrder);
 // app.post('/orders/')
 
 

@@ -3,22 +3,11 @@ const db = require('../config/db');
 // Render the manufacturers main view.
 
 exports.manufacturersMain = (req, res) => {
-  const stmt = 'SELECT * FROM inventory.manufacturers;';
-  db.query(stmt, (err, result) => {
-    if (err) throw err;
+  exports.getManufacturers().then((data) => {
     res.render('manufacturers/manufacturers', {
       title: 'manufacturers',
-      manufacturerData: result,
+      manufacturerData: data,
     });
-  });
-};
-
-// Query and send all manufacturers.
-exports.getManufacturers = (req, res) => {
-  const stmt = 'SELECT * FROM inventory.manufacturers;';
-  db.query(stmt, (err, result) => {
-    if (err) throw err;
-    res.send({ manufacturerData: result });
   });
 };
 
@@ -36,32 +25,20 @@ exports.addManufacturer = (req, res) => {
   res.redirect('/manufacturers');
 };
 
-
+// Error
 // Remove a manufacturer from the database.
 exports.deleteManufacturer = (req, res) => {
-  const stmt = 'DELETE FROM inventory.manufacturers WHERE manufacturerID = ?';
-  let id = parseInt(req.params.id, 10);
-
-  if (id === parseInt(id, 10)) {
-    db.query(stmt, id, (err, rows) => {
-      if (err)
-        console.log('Error deleting manufacturer: %s', err);
-    });
-  }
-  else {
-    console.log('%s is not a proper ID for deletion.', id);
-  }
+  const id = parseInt(req.params.id, 10);
+  exports.deleteManufacturer(id);
   res.redirect('/manufacturers');
 };
 
 // Render the edit manufacturer view
 exports.renderEdit = (req, res) => {
-  const stmt = 'SELECT * FROM manufacturers WHERE manufacturerID = ?';
-
-  db.query(stmt, req.params.id, (err, result) => {
+  exports.getManufacturers(req.params.id).then((data) => {
     res.render('manufacturers/edit_manufacturer', {
       title: 'Edit Manufacturer',
-      manufacturerData: result
+      manufacturerData: data,
     });
   });
 };
@@ -81,27 +58,40 @@ exports.editManufacturer = (req, res) => {
   });
 };
 
+// Direct DB Queries
+//
 
-const getManufacturer = (id, callback) => {
-  const stmt = 'SELECT * from manufacturers WHERE manufacturerID = ?';
-  db.query(stmt, id, (err, result) => {
-    if (err) {
-      callback(err, null);
-    }
-    else {
-      callback(null, result);
-    }
+exports.getManufacturers = () => {
+  return new Promise((resolve, reject) => {
+    const stmt = 'SELECT * FROM manufacturers;';
+    db.query(stmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
   });
 };
 
-exports.getManufacturerList = (callback) => {
-  const stmt = 'SELECT * from manufacturers ORDER BY manufacturerName';
-  db.query(stmt, (err, result) => {
+exports.getManufacturer = (manufacturerID) => {
+  return new Promise((resolve, reject) => {
+    const stmt = 'SELECT * FROM manufacturers WHERE manufacturerID = ?;';
+    db.query(stmt, manufacturerID, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+//error
+exports.deleteManufacturer = (manufacturerID) => {
+  const deleteStmt = 'DELETE FROM inventory.manufacturers WHERE manufacturerID = ?';
+  db.query(deleteStmt, manufacturerID, (err, result) => {
     if (err) {
-      callback(err, null);
+      throw err;
     }
-    else {
-      callback(null, result);
-    }
+    return result;
   });
 };

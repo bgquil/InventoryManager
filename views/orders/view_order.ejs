@@ -2,10 +2,17 @@
 
 <div class="container">
     <h1><%=title%></h1>
-    <button class="btn btn-primary float-right">Print</button> 
+    <button class="btn btn-light float-right">Print</button>
+    
     <h4>Order ID:<%=orderData[0].orderID %></h3>
     <h4>Quantity: <%=orderData[0].totalQuantity %></h3>
     <h4>Time: <%=orderData[0].orderTime %></h3>
+    <% if (orderData[0].orderFulfilled === 0) { %>
+        <% console.log(orderData[0].orderFulfilled) %>
+        <a href="/orders/fulfill/<%=orderData[0].orderID%>" button class="btn btn-primary float-right">Fulfill Order</a> 
+    <% } else { %>
+        <a button class="btn btn-success float-right">Order Fulfilled</a> 
+    <% } %>
     <br>
     <div class="data-table">
         <table class="table table-striped">
@@ -18,7 +25,6 @@
                     <th>Model</th>
                     <th>Quantity</th>
                     <th></th>
-
                 </tr>
             </thead>
 

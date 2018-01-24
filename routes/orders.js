@@ -79,6 +79,16 @@ exports.viewOrder = (req, res) => {
   }
 };
 
+exports.fulfillOrder = (req, res) => {
+  const orderStmt = 'UPDATE orders SET orderFulfilled = 1 WHERE orderID = ?';
+  db.query(orderStmt, req.params.orderID, (err, result) => {
+    if (err) {
+      throw (err);
+    }
+    res.redirect('/orders/view/' + req.params.orderID);
+  });
+};
+
 
 // Direct DB Queries
 //

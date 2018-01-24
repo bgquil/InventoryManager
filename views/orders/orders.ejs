@@ -19,6 +19,7 @@
                     <th>OrderID</th>
                     <th>Quantity</th>
                     <th>Time</th>
+                    <th>Status</th> 
                     <th></th>
 
                 </tr>
@@ -32,6 +33,11 @@
                         <td><%=orderData[i].orderID%></td>
                         <td><%=orderData[i].totalQuantity%></td>
                         <td><%=orderData[i].orderTime%></td>
+                        <%if (orderData[i].orderFulfilled === 1) { %>
+                            <td>Fulfilled</td>
+                        <% } else {%>
+                            <td>Open</td>
+                        <% }%>
                         <td>
                             <a href="/orders/view/<%=orderData[i].orderID%>" button class="btn btn-primary">View Order</button> 
                         </td>
