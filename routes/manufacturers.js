@@ -1,5 +1,6 @@
 // Import database connection
 const db = require('../config/db');
+const items = require('./items');
 
 // Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
@@ -60,9 +61,12 @@ exports.editManufacturer = (req, res) => {
 // Manufacturer Overview with Items
 exports.viewManufacturer = (req, res) => {
   exports.getManufacturers().then((data) => {
-    res.render('manufacturers/view_manufacturer', {
-      title: 'manufacturers',
-      manufacturerData: data,
+    items.getItemsByManufacturer(req.params.id).then((itemList) => {
+      res.render('manufacturers/view_manufacturer', {
+        title: 'Manufacturer Overview',
+        manufacturerData: data,
+        itemData: itemList,
+      });
     });
   });
 };

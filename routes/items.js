@@ -53,7 +53,7 @@ exports.searchItems = (req, res) => {
 
 // Render add item page
 exports.add = (req, res) => {
-  const stmt = 'SELECT * FROM inventory.manufacturers ORDER BY manufacturerName;'
+  const stmt = 'SELECT * FROM inventory.manufacturers ORDER BY manufacturerName;';
   db.query(stmt, (err, result) => {
     if (err) throw err;
     res.render('items/add_item', {
@@ -165,3 +165,14 @@ exports.applyDelete = (req, res) => {
 
 };
 
+exports.getItemsByManufacturer = (manufacturerID) => {
+  return new Promise((resolve, reject) => {
+    const stmt = 'SELECT * FROM items WHERE manufacturerID = ?;';
+    db.query(stmt, manufacturerID, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};

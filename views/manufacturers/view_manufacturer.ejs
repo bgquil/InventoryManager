@@ -1,17 +1,46 @@
 <%include ../partials/header %>
 <h1><%= title %></h1>
+
 <div class="container">
-    <form method="POST" action="/manufacturers/edit/<%=manufacturerData[0].manufacturerID%>">
-        <div class="form-group">
-            <label for="id">Manufacturer ID</label>
-            <input type="text" class="form-control" id="manufacturerID" value="<%=manufacturerData[0].manufacturerID %>" name="manufacturerID" readonly>
-        </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="manufacturerName" value="<%=manufacturerData[0].manufacturerName %>" name="manufacturerName">
-        </div>
-        <button type="submit" class="btn btn-primary float-right">Submit Changes</button>
-        <button href="/manufacturers" class="btn btn-secondary float-left">Cancel</button>
-    </form>
+    <h2><%=manufacturerData[0].manufacturerName%></h2>
+    <div class = "data-table">
+        <table class ="table table-striped" id="table_items">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Manufacturer</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="items_table_body">
+            <% if(itemData.length){
+                for (var i = 0; i < itemData.length; i++) { %>
+                <tr>
+                    <td><%=(i+1)%></td>
+                    <td><%=itemData[i].itemID%></td>
+                    <td><%=itemData[i].manufacturerName%></td>
+                    <td><%=itemData[i].name%></td>
+                    <td><%=itemData[i].model%></td>
+                    <td><%=itemData[i].quantity%></td>
+                    <td>
+                        <a class="a-inside edit" href="/items/edit/<%=itemData[i].itemID %>">Edit</a>
+                        <a class="a-inside edit" href="/items/delete/<%=itemData[i].itemID %>">Delete</a>
+                    </td>
+                </tr>
+
+                <%  }
+            }else{ %>
+                <tr><td>No Items Found</td></tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+
 </div>
+
+
 <%include ../partials/footer %>
