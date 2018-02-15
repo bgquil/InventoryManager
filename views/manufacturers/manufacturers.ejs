@@ -21,6 +21,7 @@
                 <th>Manufacturer ID</th>
                 <th>Name</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="manufacturers_table_body">
@@ -33,13 +34,18 @@
                 <td>
                     <a class="a-inside edit" href="/manufacturers/edit/<%=manufacturerData[i].manufacturerID%>">Edit</a>
                     <a class="a-inside delete" href="/manufacturers/delete/<%=manufacturerData[i].manufacturerID%>">Delete</a>
+                    
                 </td>
+                <td>
+                        <a class="btn btn-primary" href="/manufacturers/<%=manufacturerData[i].manufacturerID%>">Overview</a>
+                </td>
+
             </tr>
 
             <%  }
             }else{ %>
             <tr>
-                <td colspan="3">No user</td>
+                <td colspan="3">No Manufacturers Found</td>
             </tr>
 
         <% } %>

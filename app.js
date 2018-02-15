@@ -31,6 +31,7 @@ app.post('/manufacturers/add', manufacturers.addManufacturer);
 app.get('/manufacturers/edit/:id', manufacturers.renderEdit);
 app.post('/manufacturers/edit/:id', manufacturers.editManufacturer);
 app.get('/manufacturers/delete/:id', manufacturers.deleteManufacturer);
+app.get('/manufacturers/:id', manufacturers.viewManufacturer);
 // Items
 app.get('/items', items.renderItemsMain);
 app.post('/items/search', items.searchItems);
@@ -46,8 +47,6 @@ app.get('/orders/create', orders.createOrder);
 app.post('/orders/complete', orders.completeOrder);
 app.get('/orders/view/:id', orders.viewOrder);
 app.get('/orders/fulfill/:orderID', orders.fulfillOrder);
-// app.post('/orders/')
-
 
 /*
 Error Routing

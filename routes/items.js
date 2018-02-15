@@ -36,13 +36,15 @@ exports.searchItems = (req, res) => {
     case 'Model':
       searchType = 'model';
       break;
+    default:
+      searchType = 'name';
   }
 
   const placeVals = [searchType, searchString];
 
   db.query(stmt, placeVals, (err, result) => {
     if (err) {
-      console.log(err);
+      throw err;
     }
     res.send({ searchData: result });
   });
@@ -67,7 +69,7 @@ exports.addItem = (req, res) => {
   const stmt = 'INSERT INTO inventory.items SET ?'
   const input = JSON.parse(JSON.stringify(req.body));
 
-  let object = {
+  const object = {
     manufacturerID: input.manufacturerID, //examine
     name: input.name,
     model: input.model,
@@ -123,7 +125,7 @@ exports.editItem = (req, res) => {
 exports.applyEdit = (req, res) => {
   const stmt = 'UPDATE items SET ? WHERE itemID=?';
   const input = JSON.parse(JSON.stringify(req.body));
-  let item = {
+  const item = {
     manufacturerID: input.manufacturerID,
     name: input.name,
     model: input.model,
@@ -163,14 +165,3 @@ exports.applyDelete = (req, res) => {
 
 };
 
-const getItem = (id, callback) => {
-  const stmt = 'SELECT * FROM items WHERE itemID = ?';
-  db.query(stmt, id, (err, result) => {
-    if (err) {
-      callback(err, null);
-    }
-    else {
-      callback(null, result);
-    }
-  });
-};

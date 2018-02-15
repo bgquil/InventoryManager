@@ -1,7 +1,7 @@
 // Import database connection
 const db = require('../config/db');
-// Render the manufacturers main view.
 
+// Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
   exports.getManufacturers().then((data) => {
     res.render('manufacturers/manufacturers', {
@@ -17,15 +17,14 @@ exports.addManufacturer = (req, res) => {
   const input = JSON.parse(JSON.stringify(req.body));
   const object = { manufacturerName: input.manufacturerName };
 
-  db.query(stmt, object, (err, rows) => {
+  db.query(stmt, object, (err) => {
     if (err) {
-      console.log('Error inserting new manufacturer: %s', err);
+      throw err;
     }
   });
   res.redirect('/manufacturers');
 };
 
-// Error
 // Remove a manufacturer from the database.
 exports.deleteManufacturer = (req, res) => {
   const id = parseInt(req.params.id, 10);
@@ -48,13 +47,23 @@ exports.editManufacturer = (req, res) => {
   const stmt = 'UPDATE manufacturers SET ? WHERE manufacturerID = ?';
   const manufacturerEdits = JSON.parse(JSON.stringify(req.body));
 
-  db.query(stmt, [manufacturerEdits, req.params.id], (err, result) => {
+  db.query(stmt, [manufacturerEdits, req.params.id], (err) => {
     if (err) {
       throw err;
     }
     else {
       res.redirect('/manufacturers');
     }
+  });
+};
+
+// Manufacturer Overview with Items
+exports.viewManufacturer = (req, res) => {
+  exports.getManufacturers().then((data) => {
+    res.render('manufacturers/view_manufacturer', {
+      title: 'manufacturers',
+      manufacturerData: data,
+    });
   });
 };
 
@@ -85,7 +94,6 @@ exports.getManufacturer = (manufacturerID) => {
   });
 };
 
-//error
 exports.deleteManufacturer = (manufacturerID) => {
   const deleteStmt = 'DELETE FROM inventory.manufacturers WHERE manufacturerID = ?';
   db.query(deleteStmt, manufacturerID, (err, result) => {
