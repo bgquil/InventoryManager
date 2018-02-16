@@ -14,6 +14,13 @@ exports.listRecentOrders = (req, res) => {
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
+// Render orders search page.
+exports.searchOrders = (req, res) => {
+  exports.getRecentOrders().then((data) => {
+    res.render('orders/search_order', { title: 'Orders', orderData: data });
+  }).catch(err => setImmediate(() => { throw err; }));
+};
+
 // Render create order page
 exports.createOrder = (req, res) => {
   res.render('orders/create_order', { title: 'Create Order' });
@@ -92,6 +99,20 @@ exports.getOrders = () => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM orders;';
     db.query(orderStmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.getOrdersDate = () => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=?;';
+    const start = '2017-02-02';
+    const end = '2018-01-01';
+    db.query(orderStmt, [start, end], (err, result) => {
       if (err) {
         return reject(err);
       }

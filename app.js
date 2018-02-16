@@ -43,6 +43,7 @@ app.get('/items/delete/:id', items.renderDelete);
 app.post('/items/delete/:id', items.applyDelete);
 // Orders
 app.get('/orders', orders.listRecentOrders);
+app.get('/orders/search', orders.searchOrders);
 app.get('/orders/create', orders.createOrder);
 app.post('/orders/complete', orders.completeOrder);
 app.get('/orders/view/:id', orders.viewOrder);
