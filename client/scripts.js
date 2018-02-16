@@ -235,11 +235,13 @@ $(() => {
       tableB.append('\
             <tr>\
                 <td>' + ++rowNum + '</td>\
-                <td class="itemID">' + order.orderID + '</td>\
-                <td class="itemManufacturer">' + order.totalQuantity + '</td>\
-                <td class="itemName">' + order.orderTime + '</td>\
-                <td class="itemModel">' + order.order + '</td>\
-                <td class="quantity-available">' + order.quantity + '</td>\
+                <td class="orderID">' + order.orderID + '</td>\
+                <td class="totalQuantity">' + order.totalQuantity + '</td>\
+                <td class="orderTime">' + order.orderTime + '</td>\
+                <td class="orderFulfilled">' + (order.orderFulfilled === 1 ? "Fulfilled" : "Open") + '</td>\
+                <td>\
+                    <a href="/orders/view/'+ order.orderID +'"class="btn btn-primary view-order-button">View Order</a>\
+                </td>\
             </tr>\
             ');
     });

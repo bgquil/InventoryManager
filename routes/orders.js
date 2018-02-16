@@ -93,8 +93,8 @@ exports.fulfillOrder = (req, res) => {
 
 // Used for AJAX searching.
 exports.orderSearch = (req, res) => {
-  console.log(req.params.startDate);
-  exports.getOrdersDate().then((data) => {
+  const input = JSON.parse(JSON.stringify(req.body));
+  exports.getOrdersDate(input.startDate, input.endDate).then((data) => {
     res.send({ orderData: data });
   });
 };
@@ -114,12 +114,12 @@ exports.getOrders = () => {
   });
 };
 
-exports.getOrdersDate = () => {
+exports.getOrdersDate = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=?;';
     const start = '2017-02-02';
     const end = '2018-01-01';
-    db.query(orderStmt, [start, end], (err, result) => {
+    db.query(orderStmt, [startDate, endDate], (err, result) => {
       if (err) {
         return reject(err);
       }
