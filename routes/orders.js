@@ -15,7 +15,7 @@ exports.listRecentOrders = (req, res) => {
 };
 
 // Render orders search page.
-exports.searchOrders = (req, res) => {
+exports.searchOrdersView = (req, res) => {
   exports.getRecentOrders().then((data) => {
     res.render('orders/search_order', { title: 'Orders', orderData: data });
   }).catch(err => setImmediate(() => { throw err; }));
@@ -91,6 +91,13 @@ exports.fulfillOrder = (req, res) => {
   });
 };
 
+// Used for AJAX searching.
+exports.orderSearch = (req, res) => {
+  console.log(req.params.startDate);
+  exports.getOrdersDate().then((data) => {
+    res.send({ orderData: data });
+  });
+};
 
 // Direct DB Queries
 //

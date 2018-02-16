@@ -3,9 +3,7 @@ $(() => {
 
   $('#manufacturer_form_add').on('submit', (event) => {
     event.preventDefault();
-
-    let inputName = $('#manufacturerName');
-
+    const inputName = $('#manufacturerName');
     $.ajax({
       url: '/manufacturers/add',
       method: 'POST',
@@ -14,9 +12,7 @@ $(() => {
       success: () => {
         inputName.val('');
         fetchManufacturers();
-
-      }
-
+      },
     });
   });
 
@@ -25,7 +21,7 @@ $(() => {
       url: '/manufacturers/list',
       contentType: 'application/JSON',
       success: (res) => {
-        let tableB = $('#manufacturers_table_body');
+        const tableB = $('#manufacturers_table_body');
         tableB.html('');
 
         res.manufacturerData.forEach((manufacturer) => {
@@ -40,7 +36,7 @@ $(() => {
                     </tr>\
                     ');
         });
-      }
+      },
     });
   };
 
@@ -55,10 +51,13 @@ $(() => {
       url: '/items/search',
       method: 'POST',
       contentType: 'application/JSON',
-      data: JSON.stringify({ itemSearchType: searchType.val(), itemSearchString: searchString.val() }),
+      data: JSON.stringify({ 
+        itemSearchType: searchType.val(),
+        itemSearchString: searchString.val(),
+      }),
       success: (res) => {
-        buildItemsTable(res.searchData)
-      }
+        buildItemsTable(res.searchData);
+      },
     });
   });
 
@@ -67,7 +66,6 @@ $(() => {
     tableB.html('');
     let rowNum = 0;
     searchData.forEach((item) => {
-
       tableB.append('\
             <tr>\
                 <td class="id">' + ++rowNum + '</td>\
@@ -100,29 +98,28 @@ $(() => {
         contentType: 'application/JSON',
         data: JSON.stringify(orderList),
         success: () => {
-          console.log('in ajax');
           window.location.replace('/orders');
         },
       });
     }
   });
 
-  let addToOrderList = (item) => {
+  const addToOrderList = (item) => {
     // findIndex may not work for older browsers.
-    let index = orderList.findIndex(i => i.itemID === item.itemID);
+    const index = orderList.findIndex(i => i.itemID === item.itemID);
     if (index < 0) {
       orderList.push(item);
     }
-
-    else
+    else {
       orderList[index].quantity += item.quantity;
-
+    }
     buildItemOrderList(orderList);
   };
 
-  let removeFromOrderList = (rowNum) => {
-    if (rowNum > -1)
+  const removeFromOrderList = (rowNum) => {
+    if (rowNum > -1) {
       orderList.splice(rowNum, 1);
+    }
     buildItemOrderList(orderList);
   };
 
@@ -156,15 +153,15 @@ $(() => {
 
   $('#items_search_order_form').on('submit', (event) => {
     event.preventDefault();
-    let searchString = $('#itemSearchString');
-    let searchType = $('#itemSearchType');
+    const searchString = $('#itemSearchString');
+    const searchType = $('#itemSearchType');
     $.ajax({
       url: '/items/search',
       method: 'POST',
       contentType: 'application/JSON',
       data: JSON.stringify({
         itemSearchType: searchType.val(),
-        itemSearchString: searchString.val()
+        itemSearchString: searchString.val(),
       }),
       success: (res) => {
         buildItemsOrderSearchTable(res.searchData);
@@ -195,6 +192,7 @@ $(() => {
             ');
     });
   };
+  
   // function() {} required here over () => {}
   $('.order_items-table-body').on('click', '.add-item-button', function () {
     let row = $(this).closest('tr');
@@ -223,5 +221,48 @@ $(() => {
 
   $('#completeOrderButton').click(() => {
 
+  });
+
+
+
+  const buildOrderTable = (searchData) => {
+    console.log('in build');
+    const tableB = $('.order_table_body');
+    tableB.html('');
+    let rowNum = 0;
+    searchData.forEach((order) => {
+
+      tableB.append('\
+            <tr>\
+                <td>' + ++rowNum + '</td>\
+                <td class="itemID">' + order.orderID + '</td>\
+                <td class="itemManufacturer">' + order.totalQuantity + '</td>\
+                <td class="itemName">' + order.orderTime + '</td>\
+                <td class="itemModel">' + order.order + '</td>\
+                <td class="quantity-available">' + order.quantity + '</td>\
+            </tr>\
+            ');
+    });
+  };
+
+
+  // Order Search
+  $('#order_search_form').on('submit', (event) => {
+    event.preventDefault();
+    console.log('abc');
+    const start = $('#orderStartDate').val();
+    const end = $('#orderEndDate').val();
+    $.ajax({
+      url: '/orders/search',
+      method: 'POST',
+      contentType: 'application/JSON',
+      data: JSON.stringify({
+        startDate: start,
+        endDate: end,
+      }),
+      success: (res) => {
+        buildOrderTable(res.orderData);
+      },
+    });
   });
 });

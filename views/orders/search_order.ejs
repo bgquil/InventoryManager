@@ -3,47 +3,65 @@
 
 <main class="container">
 
-<div class="container">
-<div class="data-table">
-    <table class="table table-striped">
-        <thead class="thead-inverse">
-            <tr>
-                <th>#</th>
-                <th>OrderID</th>
-                <th>Quantity</th>
-                <th>Time</th>
-                <th>Status</th> 
-                <th></th>
+  <div class="container">
+    <form action="/items/search" method="POST" id="order_search_form">
+        <div class="form-group row">
+            <label for="example-date-input" class="col-2 col-form-label">Date</label>
+            <div class="col-10">
+              <input class="form-control" type="date" value="2011-08-19" id="orderStartDate">
+            </div>
+          </div>
+          <div class="form-group row">
+              <label for="example-date-input" class="col-2 col-form-label">Date</label>
+              <div class="col-10">
+                <input class="form-control" type="date" value="2011-08-19" id="orderEndDate"> 
+              </div>
+            </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
 
-            </tr>
-        </thead>
+  <div class="container">
+    <div class="data-table">
+      <table class="table table-striped">
+          <thead class="thead-inverse">
+              <tr>
+                  <th>#</th>
+                  <th>OrderID</th>
+                  <th>Quantity</th>
+                  <th>Time</th>
+                  <th>Status</th> 
+                  <th></th>
 
-        <tbody id="items_table_body">
-            <% if(orderData.length){
-                for (var i = 0; i < orderData.length; i++) { %>
-                <tr>
-                    <td><%=(i+1)%></td>
-                    <td><%=orderData[i].orderID%></td>
-                    <td><%=orderData[i].totalQuantity%></td>
-                    <td><%=orderData[i].orderTime%></td>
-                    <%if (orderData[i].orderFulfilled === 1) { %>
-                        <td>Fulfilled</td>
-                    <% } else {%>
-                        <td>Open</td>
-                    <% }%>
-                    <td>
-                        <a href="/orders/view/<%=orderData[i].orderID%>" button class="btn btn-primary">View Order</button> 
-                    </td>
-                </tr>
+              </tr>
+          </thead>
 
-                <%  }
-            }else{ %>
+          <tbody class="order_table_body">
+              <% if(orderData.length){
+                  for (var i = 0; i < orderData.length; i++) { %>
+                  <tr>
+                      <td><%=(i+1)%></td>
+                      <td><%=orderData[i].orderID%></td>
+                      <td><%=orderData[i].totalQuantity%></td>
+                      <td><%=orderData[i].orderTime%></td>
+                      <%if (orderData[i].orderFulfilled === 1) { %>
+                          <td>Fulfilled</td>
+                      <% } else {%>
+                          <td>Open</td>
+                      <% }%>
+                      <td>
+                          <a href="/orders/view/<%=orderData[i].orderID%>" button class="btn btn-primary">View Order</button> 
+                      </td>
+                  </tr>
 
-            <% } %>
-            </tbody>
+                  <%  }
+              }else{ %>
 
-    </table>
-</div>
+              <% } %>
+              </tbody>
+
+      </table>
+    </div>
 </div>
 </main>
 
