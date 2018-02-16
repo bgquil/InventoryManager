@@ -1,55 +1,53 @@
 <%include partials/header %>
-<h1><%= title %></h1>
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
-            <div class="jumbotron">
-                <p>Dashboard</p>        
-            </div>
-        </div>
-            <div class="col-lg-8 col-md-6 col-sm-6 col-xs-6">
-                <div class="data-table">
-                    <h1>Recent Orders</h1>
-                    <table class="table table-striped">
-                        <thead class="thead-inverse">
-                            <tr>
-                                <!-- <th>#</th> -->
-                                <th>OrderID</th>
-                                <th>Quantity</th>
-                                <th>Time</th>
-                                <th>Status</th> 
-                                <th></th>
-                            </tr>
-                        </thead>
-            
-                        <tbody id="items_table_body">
-                            <% if(orderData.length){
-                                for (var i = 0; i < orderData.length; i++) { %>
-                                <tr>
-                                    <!-- <td><%=(i+1)%></td> -->
-                                    <td><%=orderData[i].orderID%></td>
-                                    <td><%=orderData[i].totalQuantity%></td>
-                                    <td><%=orderData[i].orderTime%></td>
-                                    <%if (orderData[i].orderFulfilled === 1) { %>
-                                        <td>Completed</td>
-                                    <% } else {%>
-                                        <td>Open</td>
-                                    <% }%>
-                                    <td>
-                                        <a href="/orders/view/<%=orderData[i].orderID%>" button class="btn btn-primary">View Order</button> 
-                                    </td>
-                                </tr>
-                
-                                <%  }
-                            }else{ %>
-                                <tr><td>No Recent Orders</td></tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-            </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+        <div class="jumbotron">
+            <p>Dashboard</p>        
         </div>
     </div>
+        <div class="col-lg-8 col-md-6 col-sm-6 col-xs-6">
+            <div class="data-table">
+                <h1>Recent Orders</h1>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <!-- <th>#</th> -->
+                            <th>OrderID</th>
+                            <th>Quantity</th>
+                            <th>Time</th>
+                            <th>Status</th> 
+                            <th></th>
+                        </tr>
+                    </thead>
+        
+                    <tbody id="items_table_body">
+                        <% if(orderData.length){
+                            for (var i = 0; i < orderData.length; i++) { %>
+                            <tr>
+                                <!-- <td><%=(i+1)%></td> -->
+                                <td><%=orderData[i].orderID%></td>
+                                <td><%=orderData[i].totalQuantity%></td>
+                                <td><%=orderData[i].orderTime%></td>
+                                <%if (orderData[i].orderFulfilled === 1) { %>
+                                    <td>Completed</td>
+                                <% } else {%>
+                                    <td>Open</td>
+                                <% }%>
+                                <td>
+                                    <a href="/orders/view/<%=orderData[i].orderID%>" button class="btn btn-primary">View Order</button> 
+                                </td>
+                            </tr>
+            
+                            <%  }
+                        }else{ %>
+                            <tr><td>No Recent Orders</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+  </div>
 </div>
 
    

@@ -2,13 +2,19 @@
 
 
 <div class="container">
-    <h1><%= title %></h1>
-    <form action="/orders/" method="POST" class="form-inline">
-    <a href="/orders/create" class="btn btn-primary">Create Order</a>
-        
-    </form>
-
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Search</h1>
+            <a href="/orders/create" class="btn btn-primary">Search Orders</a>
+        </div>
+        <div class="col-md-6">
+            <h1>Create</h1>
+            <a href="/orders/create" class="btn btn-primary">Create Order</a>
+            </div>
+    </div>
+    <hr>
 </div>
+
 
 <div class="container">
     <div class="data-table">

@@ -5,13 +5,13 @@ const db = require('../config/db');
 exports.listOrders = (req, res) => {
   exports.getRecentOrders().then((data) => {
     res.render('orders/orders', { title: 'Orders', orderData: data });
-  }).catch((err) => setImmediate(() => { throw err; }));
+  }).catch(err => setImmediate(() => { throw err; }));
 };
 // Render orders main page.
 exports.listRecentOrders = (req, res) => {
   exports.getRecentOrders().then((data) => {
-    res.render('orders/orders', { title: 'Recent Orders', orderData: data });
-  }).catch((err) => setImmediate(() => { throw err; }));
+    res.render('orders/orders', { title: 'Orders', orderData: data });
+  }).catch(err => setImmediate(() => { throw err; }));
 };
 
 // Render create order page
@@ -21,13 +21,8 @@ exports.createOrder = (req, res) => {
 
 exports.completeOrder = (req, res) => {
   const orderList = JSON.parse(JSON.stringify(req.body));
-
-  //order list length
-
-  // need to count total number of items
   const orderStmt = 'call insert_order(?)';
   const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
-
 
   db.query(orderStmt, orderList.length, (err, result) => {
     const orderID = result[0][0].orderID;
@@ -50,7 +45,7 @@ exports.viewOrder = (req, res) => {
                         INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID\
                         WHERE order_item.orderID = ?'
 
-  const orderStmt = 'SELECT * FROM orders WHERE orderID = ?'
+  const orderStmt = 'SELECT * FROM orders WHERE orderID = ?';
 
   let orderID = parseInt(req.params.id, 10);
 
