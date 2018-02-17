@@ -1,12 +1,6 @@
 // Import database connection
 const db = require('../config/db');
 
-
-exports.listOrders = (req, res) => {
-  exports.getRecentOrders().then((data) => {
-    res.render('orders/orders', { title: 'Orders', orderData: data });
-  }).catch(err => setImmediate(() => { throw err; }));
-};
 // Render orders main page.
 exports.listRecentOrders = (req, res) => {
   exports.getRecentOrders().then((data) => {
@@ -24,6 +18,12 @@ exports.searchOrdersView = (req, res) => {
 // Render create order page
 exports.createOrder = (req, res) => {
   res.render('orders/create_order', { title: 'Create Order' });
+};
+
+exports.listOrders = (req, res) => {
+  exports.getRecentOrders().then((data) => {
+    res.render('orders/orders', { title: 'Orders', orderData: data });
+  }).catch(err => setImmediate(() => { throw err; }));
 };
 
 exports.completeOrder = (req, res) => {
@@ -54,10 +54,9 @@ exports.viewOrder = (req, res) => {
 
   const orderStmt = 'SELECT * FROM orders WHERE orderID = ?';
 
-  let orderID = parseInt(req.params.id, 10);
-
-  let itemsResult = {};
-  let orderResult = {};
+  const orderID = parseInt(req.params.id, 10);
+  const itemsResult = {};
+  const orderResult = {};
 
   if (orderID === parseInt(orderID, 10)) {
     db.query(itemStmt, orderID, (err, itemsResult) => {
@@ -75,9 +74,6 @@ exports.viewOrder = (req, res) => {
         });
       }
     });
-  }
-  else {
-    console.log('%s is not a proper order ID.', orderID);
   }
 };
 
@@ -102,6 +98,7 @@ exports.orderSearch = (req, res) => {
 // Direct DB Queries
 //
 
+// Get all orders
 exports.getOrders = () => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM orders;';
@@ -114,11 +111,10 @@ exports.getOrders = () => {
   });
 };
 
+// Get orders between two dates
 exports.getOrdersDate = (startDate, endDate) => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=?;';
-    const start = '2017-02-02';
-    const end = '2018-01-01';
     db.query(orderStmt, [startDate, endDate], (err, result) => {
       if (err) {
         return reject(err);
@@ -128,6 +124,7 @@ exports.getOrdersDate = (startDate, endDate) => {
   });
 };
 
+// Get the week's orders
 exports.getRecentOrders = () => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM inventory.orders\

@@ -50,10 +50,7 @@ app.post('/orders/complete', orders.completeOrder);
 app.get('/orders/view/:id', orders.viewOrder);
 app.get('/orders/fulfill/:orderID', orders.fulfillOrder);
 
-/*
-Error Routing
-*/
-
+// Error Routing
 // 404
 app.use((req, res) => {
   res.type('text/html');

@@ -1,21 +1,6 @@
 $(() => {
   // Manufacturers
 
-  $('#manufacturer_form_add').on('submit', (event) => {
-    event.preventDefault();
-    const inputName = $('#manufacturerName');
-    $.ajax({
-      url: '/manufacturers/add',
-      method: 'POST',
-      contentType: 'application/JSON',
-      data: JSON.stringify({ manufacturerName: inputName.val() }),
-      success: () => {
-        inputName.val('');
-        fetchManufacturers();
-      },
-    });
-  });
-
   const fetchManufacturers = () => {
     $.ajax({
       url: '/manufacturers/list',
@@ -40,26 +25,22 @@ $(() => {
     });
   };
 
-
-  // Items
-
-  $('#items_search_form').on('submit', (event) => {
+  $('#manufacturer_form_add').on('submit', (event) => {
     event.preventDefault();
-    let searchString = $('#itemSearchString');
-    let searchType = $('#itemSearchType');
+    const inputName = $('#manufacturerName');
     $.ajax({
-      url: '/items/search',
+      url: '/manufacturers/add',
       method: 'POST',
       contentType: 'application/JSON',
-      data: JSON.stringify({ 
-        itemSearchType: searchType.val(),
-        itemSearchString: searchString.val(),
-      }),
-      success: (res) => {
-        buildItemsTable(res.searchData);
+      data: JSON.stringify({ manufacturerName: inputName.val() }),
+      success: () => {
+        inputName.val('');
+        fetchManufacturers();
       },
     });
   });
+
+  // Items
 
   const buildItemsTable = (searchData) => {
     const tableB = $('#items_table_body');
@@ -83,7 +64,47 @@ $(() => {
     });
   };
 
-  //Orders
+  $('#items_search_form').on('submit', (event) => {
+    event.preventDefault();
+    const searchString = $('#itemSearchString');
+    const searchType = $('#itemSearchType');
+    $.ajax({
+      url: '/items/search',
+      method: 'POST',
+      contentType: 'application/JSON',
+      data: JSON.stringify({ 
+        itemSearchType: searchType.val(),
+        itemSearchString: searchString.val(),
+      }),
+      success: (res) => {
+        buildItemsTable(res.searchData);
+      },
+    });
+  });
+
+  // Orders
+
+  const buildItemOrderList = (orderList) => {
+    const tableB = $('.order_items-list');
+    tableB.html('');
+    let rowNum = 0;
+
+    orderList.forEach((item) => {
+      tableB.append('\
+            <tr>\
+                <td class="rowNum">' + ++rowNum + '</td>\
+                <td class="itemID">' + item.itemID + '</td>\
+                <td>' + item.manufacturerName + '</td>\
+                <td>' + item.name + '</td>\
+                <td>' + item.model + '</td>\
+                <td class="quantity-requested">' + item.quantity + '</td>\
+                <td>\
+                    <button class="btn btn-primary remove-item-button">Remove Item</button>\
+                </td>\
+            </tr>\
+            ');
+    });
+  };
 
   const orderList = [];
 
@@ -129,28 +150,6 @@ $(() => {
     removeFromOrderList(parseInt(rowNum) - 1);
   });
 
-  const buildItemOrderList = (orderList) => {
-    const tableB = $('.order_items-list');
-    tableB.html('');
-    let rowNum = 0;
-
-    orderList.forEach((item) => {
-      tableB.append('\
-            <tr>\
-                <td class="rowNum">' + ++rowNum + '</td>\
-                <td class="itemID">' + item.itemID + '</td>\
-                <td>' + item.manufacturerName + '</td>\
-                <td>' + item.name + '</td>\
-                <td>' + item.model + '</td>\
-                <td class="quantity-requested">' + item.quantity + '</td>\
-                <td>\
-                    <button class="btn btn-primary remove-item-button">Remove Item</button>\
-                </td>\
-            </tr>\
-            ');
-    });
-  };
-
   $('#items_search_order_form').on('submit', (event) => {
     event.preventDefault();
     const searchString = $('#itemSearchString');
@@ -195,23 +194,21 @@ $(() => {
   
   // function() {} required here over () => {}
   $('.order_items-table-body').on('click', '.add-item-button', function () {
-    let row = $(this).closest('tr');
-    let id = row.find('.itemID').text();
-    let manuf = row.find('.itemManufacturer').text();
-    let name = row.find('.itemName').text();
-    let model = row.find('.itemModel').text();
-    let quantityAvailable = parseInt(row.find('.quantity-available').text());
-    let quantity = parseInt(row.find('.add-item-quantity').val());
-    console.log(quantityAvailable);
-
-
+    const row = $(this).closest('tr');
+    const id = row.find('.itemID').text();
+    const manuf = row.find('.itemManufacturer').text();
+    const name = row.find('.itemName').text();
+    const model = row.find('.itemModel').text();
+    const quantityAvailable = parseInt(row.find('.quantity-available').text());
+    const quantity = parseInt(row.find('.add-item-quantity').val());
+    // using property shorthand
     if ((quantity > 0) && (quantity <= quantityAvailable)) {
       addToOrderList({
         itemID: id,
         manufacturerName: manuf,
-        name: name,
-        model: model,
-        quantity: quantity
+        name,
+        model,
+        quantity,
       });
     }
     else {
@@ -226,7 +223,6 @@ $(() => {
 
 
   const buildOrderTable = (searchData) => {
-    console.log('in build');
     const tableB = $('.order_table_body');
     tableB.html('');
     let rowNum = 0;
