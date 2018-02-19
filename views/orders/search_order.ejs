@@ -2,6 +2,7 @@
 
 
 <main class="container">
+    <div class="container">
     <form class="form-inline" form action="/items/search" method="POST" id="order_search_form">
         <label class="mr-sm-2" for="startDateInput">Start Date</label>
         <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" value="2018-01-01" id="orderStartDate">
@@ -9,8 +10,9 @@
         <label class="mr-sm-2" for="endDateInput">End Date</label>
         <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" value="2018-12-01" id="orderEndDate">
 
-        <label class="mr-sm-2" for="inlineFormCustomSelect">Fullfillment Status</label>
+        
         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <label class="mr-sm-2" for="inlineFormCustomSelect">Fullfillment Status</label>
                 <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="fulfillmentStatusSelection">
                         <option selected value="*">Any</option>
                         <option value="0">Open</option>
@@ -19,7 +21,8 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    
+    </div>
+
     <br>
     <div class="container">
     <div class="data-table">

@@ -91,12 +91,16 @@ exports.fulfillOrder = (req, res) => {
 // Used for AJAX searching by date.
 exports.orderSearch = (req, res) => {
   const input = JSON.parse(JSON.stringify(req.body));
-  exports.getOrdersDate(input.startDate, input.endDate, input.status).then((data) => {
-    res.send({ orderData: data });
-  });
+  if (input.status === '*') {
+    exports.getOrdersDate(input.startDate, input.endDate, input.status).then((data) => {
+      res.send({ orderData: data });
+    });
+  } else {
+    exports.getOrdersDateStatus(input.startDate, input.endDate).then((data) => {
+      res.send({ orderData: data });
+    });
+  }
 };
-
-
 
 
 // Direct DB Queries
@@ -116,7 +120,20 @@ exports.getOrders = () => {
 };
 
 // Get orders between two dates
-exports.getOrdersDate = (startDate, endDate, fulfilled) => {
+exports.getOrdersDate = (startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=?;';
+    db.query(orderStmt, [startDate, endDate], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+// Get orders between two dates with status
+exports.getOrdersDateStatus = (startDate, endDate, fulfilled) => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=? and orderFulfilled = ?;';
     db.query(orderStmt, [startDate, endDate, fulfilled], (err, result) => {
@@ -127,6 +144,7 @@ exports.getOrdersDate = (startDate, endDate, fulfilled) => {
     });
   });
 };
+
 
 // Get the week's orders
 exports.getRecentOrders = () => {
