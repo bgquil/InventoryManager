@@ -2,26 +2,26 @@
 
 
 <main class="container">
+    <form class="form-inline" form action="/items/search" method="POST" id="order_search_form">
+        <label class="mr-sm-2" for="startDateInput">Start Date</label>
+        <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" value="2018-01-01" id="orderStartDate">
 
-  <div class="container">
-    <form action="/items/search" method="POST" id="order_search_form">
-        <div class="form-group row">
-            <label for="example-date-input" class="col-2 col-form-label">Start Date</label>
-            <div class="col-10">
-              <input class="form-control" type="date" value="2018-01-01" id="orderStartDate">
-            </div>
-          </div>
-          <div class="form-group row">
-              <label for="example-date-input" class="col-2 col-form-label">End Date</label>
-              <div class="col-10">
-                <input class="form-control" type="date" value="2018-02-16" id="orderEndDate"> 
-              </div>
-            </div>
-          <button type="submit" class="btn btn-primary">Search</button>
+        <label class="mr-sm-2" for="endDateInput">End Date</label>
+        <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" value="2018-12-01" id="orderEndDate">
+
+        <label class="mr-sm-2" for="inlineFormCustomSelect">Fullfillment Status</label>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="fulfillmentStatusSelection">
+                        <option selected value="*">Any</option>
+                        <option value="0">Open</option>
+                        <option value="1">Fulfilled</option>
+                        </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-  </div>
-<br>
-  <div class="container">
+    
+    <br>
+    <div class="container">
     <div class="data-table">
       <table class="table table-striped">
           <thead class="thead-inverse">
@@ -62,7 +62,7 @@
 
       </table>
     </div>
-</div>
+    </div>
 </main>
 
 <%include ../partials/footer.ejs %>

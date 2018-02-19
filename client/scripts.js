@@ -250,6 +250,7 @@ $(() => {
     console.log('abc');
     const start = $('#orderStartDate').val();
     const end = $('#orderEndDate').val();
+    const status = $('#fulfillmentStatusSelection').val();
     $.ajax({
       url: '/orders/search',
       method: 'POST',
@@ -257,6 +258,7 @@ $(() => {
       data: JSON.stringify({
         startDate: start,
         endDate: end,
+        status,
       }),
       success: (res) => {
         buildOrderTable(res.orderData);

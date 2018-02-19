@@ -77,6 +77,7 @@ exports.viewOrder = (req, res) => {
   }
 };
 
+// Set an order's status as fulfilled
 exports.fulfillOrder = (req, res) => {
   const orderStmt = 'UPDATE orders SET orderFulfilled = 1 WHERE orderID = ?';
   db.query(orderStmt, req.params.orderID, (err, result) => {
@@ -87,13 +88,16 @@ exports.fulfillOrder = (req, res) => {
   });
 };
 
-// Used for AJAX searching.
+// Used for AJAX searching by date.
 exports.orderSearch = (req, res) => {
   const input = JSON.parse(JSON.stringify(req.body));
-  exports.getOrdersDate(input.startDate, input.endDate).then((data) => {
+  exports.getOrdersDate(input.startDate, input.endDate, input.status).then((data) => {
     res.send({ orderData: data });
   });
 };
+
+
+
 
 // Direct DB Queries
 //
@@ -112,10 +116,10 @@ exports.getOrders = () => {
 };
 
 // Get orders between two dates
-exports.getOrdersDate = (startDate, endDate) => {
+exports.getOrdersDate = (startDate, endDate, fulfilled) => {
   return new Promise((resolve, reject) => {
-    const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=?;';
-    db.query(orderStmt, [startDate, endDate], (err, result) => {
+    const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=? and orderFulfilled = ?;';
+    db.query(orderStmt, [startDate, endDate, fulfilled], (err, result) => {
       if (err) {
         return reject(err);
       }
