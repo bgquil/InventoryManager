@@ -6,6 +6,8 @@ const manufacturers = require('./routes/manufacturers');
 const items = require('./routes/items');
 const orders = require('./routes/orders');
 
+const manufacturersDB = require('./routes/db/manufacturersDB');
+
 const app = express();
 
 // View Engine
@@ -17,8 +19,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static Directories
-app.use('/public', express.static(__dirname + '/public'));
-app.use('/client', express.static(__dirname + '/client'));
+app.use('/public', express.static(path.join(__dirname, '/public')));
+app.use('/client', express.static(path.join(__dirname, '/client')));
 
 // Routing
 
@@ -26,7 +28,7 @@ app.get('/', routes.index);
 
 // Manufacturers
 app.get('/manufacturers', manufacturers.manufacturersMain);
-app.get('/manufacturers/list', manufacturers.getManufacturers);
+app.get('/manufacturers/list', manufacturersDB.getManufacturers);
 app.post('/manufacturers/add', manufacturers.addManufacturer);
 app.get('/manufacturers/edit/:id', manufacturers.renderEdit);
 app.post('/manufacturers/edit/:id', manufacturers.editManufacturer);

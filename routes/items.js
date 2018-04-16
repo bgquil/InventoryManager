@@ -1,29 +1,20 @@
 // Import database connection
 const db = require('../config/db');
 const manufacturers = require('./manufacturers');
+const itemsDB = require('./db/itemsDB');
 
 
 // Render the items main view
 exports.renderItemsMain = (req, res) => {
-  const stmt = 'SELECT * FROM items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID';
-
-  db.query(stmt, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    else {
-      res.render('items/items.ejs', {
-        title: 'Manage Items',
-        data: result,
-      });
-    }
-  });
+  const quantityMin = 50;
+  itemsDB.getItemsByQuantity(quantityMin).then((data) => {
+    res.render('items/items.ejs', { title: 'Manage Items', data: data });
+  }).catch(err => setImmediate(() => { throw err; }));
 };
 
 exports.searchItems = (req, res) => {
-  const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE ?? = ?';
   const input = JSON.parse(JSON.stringify(req.body));
-
+  // Parse search
   let searchType = '';
   const searchString = input.itemSearchString;
   switch (input.itemSearchType) {
@@ -42,12 +33,9 @@ exports.searchItems = (req, res) => {
 
   const placeVals = [searchType, searchString];
 
-  db.query(stmt, placeVals, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    res.send({ searchData: result });
-  });
+  itemsDB.searchItems(placeVals).then((data) => {
+    res.send({ searchData: data });
+  }).catch(err => setImmediate(() => { throw err; }));
 };
 
 
@@ -101,7 +89,7 @@ exports.editItem = (req, res) => {
 
   // });
 
-  getItem(req.params.id, (err, item) => {
+  exports.getItem(req.params.id, (err, item) => {
     if (err) {
       throw err;
     }
@@ -165,14 +153,4 @@ exports.applyDelete = (req, res) => {
 
 };
 
-exports.getItemsByManufacturer = (manufacturerID) => {
-  return new Promise((resolve, reject) => {
-    const stmt = 'SELECT * FROM items WHERE manufacturerID = ?;';
-    db.query(stmt, manufacturerID, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(result);
-    });
-  });
-};
+

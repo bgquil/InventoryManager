@@ -1,10 +1,11 @@
 // Import database connection
 const db = require('../config/db');
-const items = require('./items');
+const manufacturersDB = require('./db/manufacturersDB');
+const itemsDB = require('./db/itemsDB');
 
 // Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
-  exports.getManufacturers().then((data) => {
+  manufacturersDB.getManufacturers().then((data) => {
     res.render('manufacturers/manufacturers', {
       title: 'manufacturers',
       manufacturerData: data,
@@ -35,7 +36,7 @@ exports.deleteManufacturer = (req, res) => {
 
 // Render the edit manufacturer view
 exports.renderEdit = (req, res) => {
-  exports.getManufacturers(req.params.id).then((data) => {
+  manufacturersDB.getManufacturers(req.params.id).then((data) => {
     res.render('manufacturers/edit_manufacturer', {
       title: 'Edit Manufacturer',
       manufacturerData: data,
@@ -60,50 +61,13 @@ exports.editManufacturer = (req, res) => {
 
 // Manufacturer Overview with Items
 exports.viewManufacturer = (req, res) => {
-  exports.getManufacturers().then((data) => {
-    items.getItemsByManufacturer(req.params.id).then((itemList) => {
+  manufacturersDB.getManufacturers().then((data) => {
+    itemsDB.getItemsByManufacturer(req.params.id).then((itemList) => {
       res.render('manufacturers/view_manufacturer', {
         title: 'Manufacturer Overview',
         manufacturerData: data,
         itemData: itemList,
       });
     });
-  });
-};
-
-// Direct DB Queries
-//
-
-exports.getManufacturers = () => {
-  return new Promise((resolve, reject) => {
-    const stmt = 'SELECT * FROM manufacturers;';
-    db.query(stmt, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(result);
-    });
-  });
-};
-
-exports.getManufacturer = (manufacturerID) => {
-  return new Promise((resolve, reject) => {
-    const stmt = 'SELECT * FROM manufacturers WHERE manufacturerID = ?;';
-    db.query(stmt, manufacturerID, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(result);
-    });
-  });
-};
-
-exports.deleteManufacturer = (manufacturerID) => {
-  const deleteStmt = 'DELETE FROM inventory.manufacturers WHERE manufacturerID = ?';
-  db.query(deleteStmt, manufacturerID, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    return result;
   });
 };
