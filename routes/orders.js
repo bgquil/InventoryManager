@@ -54,35 +54,11 @@ exports.completeOrder = (req, res) => {
 };
 
 exports.viewOrder = (req, res) => {
-  const itemStmt = 'SELECT * FROM order_item\
-                        INNER JOIN orders ON orders.OrderID = order_item.OrderID\
-                        INNER JOIN items ON order_item.itemID = items.itemID\
-                        INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID\
-                        WHERE order_item.orderID = ?'
-
-  const orderStmt = 'SELECT * FROM orders WHERE orderID = ?';
-
   const orderID = parseInt(req.params.id, 10);
-  const itemsResult = {};
-  const orderResult = {};
-
-  if (orderID === parseInt(orderID, 10)) {
-    db.query(itemStmt, orderID, (err, itemsResult) => {
-      if (err) {
-        throw (err);
-      }
-      else {
-        db.query(orderStmt, orderID, (err, orderResult) => {
-          if (err) {
-            throw (err);
-          }
-          else {
-            res.render('orders/view_order', { title: 'Order View', orderData: orderResult, itemData: itemsResult });
-          }
-        });
-      }
-    });
-  }
+  ordersDB.getOrderInvoice(orderID).then((invoiceData) => {
+    // invoiceData is [0] = order information, [1] = item information in orders
+    res.render('orders/view_order', { title: 'Order Invoice', orderData: invoiceData[0], itemData: invoiceData[1] });
+  });
 };
 
 // Set an order's status as fulfilled
