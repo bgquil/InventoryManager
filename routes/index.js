@@ -1,10 +1,9 @@
 // Import database connection
-const db = require('../config/db');
-const ord = require('./orders');
+const ordersDB = require('./db/ordersDB');
 
 // Get Index
 exports.index = (req, res) => {
-  ord.getRecentOrders().then((data) => {
+  ordersDB.getRecentOrders().then((data) => {
     res.render('index', { title: 'Root Index', orderData: data });
   }).catch((err) => setImmediate(() => { throw err; }));
 };
