@@ -8,6 +8,13 @@ exports.listRecentOrders = (req, res) => {
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
+// Render orders main page.
+exports.renderOpenOrders = (req, res) => {
+  exports.getOpenOrders().then((data) => {
+    res.render('orders/view_open_order', { title: 'Orders', orderData: data });
+  }).catch(err => setImmediate(() => { throw err; }));
+};
+
 // Render orders search page.
 exports.searchOrdersView = (req, res) => {
   exports.getRecentOrders().then((data) => {
@@ -176,3 +183,16 @@ exports.getOrders = (orderID) => {
     });
   });
 };
+
+exports.getOpenOrders = () => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM inventory.orders WHERE orderFulfilled = 0';
+    db.query(orderStmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+

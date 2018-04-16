@@ -1,0 +1,79 @@
+<%include ../partials/header.ejs %>
+    
+<div class="container">
+    <br>
+    <h2>Open Orders</h2>
+    <br>
+    <div class="data-table">
+        <table class="table table-striped">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>OrderID</th>
+                    <th>Quantity</th>
+                    <th>Time</th>
+                    <th>Status</th> 
+                    <th></th>
+
+                </tr>
+            </thead>
+
+            <tbody id="items_table_body">
+                <% if(orderData.length){
+                    for (var i = 0; i < orderData.length; i++) { %>
+                    <tr>
+                        <td><%=(i+1)%></td>
+                        <td><%=orderData[i].orderID%></td>
+                        <td><%=orderData[i].totalQuantity%></td>
+                        <td><%=orderData[i].orderTime%></td>
+                        <%if (orderData[i].orderFulfilled === 1) { %>
+                            <td>Fulfilled</td>
+                        <% } else {%>
+                            <td>Open</td>
+                        <% }%>
+                        <td>
+                            <a href="/orders/view/<%=orderData[i].orderID%>" button class="btn btn-primary">View Order</button> 
+                        </td>
+                    </tr>
+    
+                    <%  }
+                }else{ %>
+    
+                <% } %>
+                </tbody>
+
+        </table>
+    </div>
+</div>
+
+<!-- <div class="container">
+    <div class="data-table">
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Order ID</th>
+                <th>Date</th>
+            </tr>
+            <% if (orderData.length){
+                for (let i = 0; i < orderData.length; i++) { %>
+                    <tr>
+                        <td><%=(i+1)%></td>
+                        <td><%=orderData[i].orderID%></td>
+                        <td><%=orderData[i].orderDateTime%></td>
+                        <td>
+                            <a class="a-inside edit" href="#">Placeholder</a>
+                            <a class="a-inside edit" href="#">Placeholder</a>
+                        </td>
+                    </tr>
+                <% } 
+            } else { %>
+                <tr>
+                    <td colspan="4">No Data</td>
+                </tr>
+            <% } %>
+        </table>
+    </div>
+
+</div> -->
+
+<%include ../partials/footer.ejs %>
