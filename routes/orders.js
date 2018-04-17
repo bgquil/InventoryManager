@@ -34,16 +34,16 @@ exports.listOrders = (req, res) => {
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
+
 exports.completeOrder = (req, res) => {
   const orderList = JSON.parse(JSON.stringify(req.body));
-  const orderStmt = 'call insert_order(?)';
   const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
 
-  db.query(orderStmt, orderList.length, (err, result) => {
-    const orderID = result[0][0].orderID;
+  ordersDB.getNextOrderID(orderList.length).then((data) => {
+    const orderID = data[0][0].orderID;
     orderList.forEach((orderItem) => {
       const values = [orderID, orderItem.itemID, orderItem.quantity];
-      db.query(itemStmt, values, (err, result) => {
+      db.query(itemStmt, values, (err) => {
         if (err) {
           throw err;
         }
@@ -51,6 +51,7 @@ exports.completeOrder = (req, res) => {
     });
     res.redirect('/orders');
   });
+
 };
 
 exports.viewOrder = (req, res) => {
@@ -63,24 +64,25 @@ exports.viewOrder = (req, res) => {
 
 // Set an order's status as fulfilled
 exports.fulfillOrder = (req, res) => {
-  const orderStmt = 'UPDATE orders SET orderFulfilled = 1 WHERE orderID = ?';
-  db.query(orderStmt, req.params.orderID, (err, result) => {
-    if (err) {
-      throw (err);
-    }
-    res.redirect('/orders/view/' + req.params.orderID);
-  });
+  const orderID = req.params.orderID;
+  ordersDB.fulfillOrder(orderID).then(() => {
+
+    res.redirect('/orders/view/' + orderID);
+  }).catch(err => setImmediate(() => { res.redirect('/orders/view/' + orderID); }));
 };
 
 // Used for AJAX searching by date.
 exports.orderSearch = (req, res) => {
   const input = JSON.parse(JSON.stringify(req.body));
+  const startDate = input.startDate;
+  const endDate = input.endDate;
+  const status = input.status;
   if (input.status === '*') {
-    ordersDB.getOrdersDate(input.startDate, input.endDate, input.status).then((data) => {
+    ordersDB.getOrdersDate(startDate, endDate).then((data) => {
       res.send({ orderData: data });
     });
   } else {
-    ordersDB.getOrdersDateStatus(input.startDate, input.endDate).then((data) => {
+    ordersDB.getOrdersDateStatus(startDate, endDate, status).then((data) => {
       res.send({ orderData: data });
     });
   }

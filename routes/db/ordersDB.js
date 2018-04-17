@@ -130,7 +130,7 @@ exports.getOrderItems = (orderID) => {
                         INNER JOIN items ON order_item.itemID = items.itemID\
                         INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID\
                         WHERE order_item.orderID = ?';
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     db.query(itemStmt, orderID, (err, result) => {
       if (err) {
         return reject(err);
@@ -142,4 +142,29 @@ exports.getOrderItems = (orderID) => {
 
 exports.getOrderInvoice = (orderID) => {
   return Promise.all([exports.getOrder(orderID), exports.getOrderItems(orderID)]);
+};
+
+
+exports.getNextOrderID = (orderListLength) => {
+  const orderStmt = 'call insert_order(?)';
+  return new Promise((resolve, reject) => {
+    db.query(orderStmt, orderListLength, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.fulfillOrder = (orderID) => {
+  return new Promise((reject, resolve) => {
+    const orderStmt = 'UPDATE orders SET orderFulfilled = 1 WHERE orderID = ?';
+    db.query(orderStmt, orderID, (err) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve();
+    });
+  });
 };
