@@ -25,10 +25,10 @@ exports.getAllManufacturers = () => {
   });
 };
 
-exports.addManufacturer = (name) => {
+exports.addManufacturer = (manufacturer) => {
   return new Promise((resolve, reject) => {
-    const stmt = 'SELECT * FROM manufacturers;';
-    db.query(stmt, (err, result) => {
+    const stmt = 'Insert into manufacturers SET ?;';
+    db.query(stmt, manufacturer, (err, result) => {
       if (err) {
         return reject(err);
       }
