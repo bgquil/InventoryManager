@@ -4,9 +4,9 @@ const manufacturersDB = require('../db/manufacturers');
 
 
 router.get('/', (req, res, next) => {
-    res.status(200).json({
-        manufacturerName: 'GET placeholder',
-    });
+    manufacturersDB.getAllManufacturers().then((data) => {
+        res.status(200).json(data);
+    }).catch(err => setImmediate(() => { throw err; }));
 });
 
 router.get('/:id', (req, res, next) => {

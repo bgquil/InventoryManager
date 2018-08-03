@@ -13,3 +13,16 @@ exports.getManufacturer = (manufacturerID) => {
     });
   });
 };
+
+exports.getAllManufacturers = () => {
+
+  return new Promise((resolve, reject) => {
+    const stmt = 'SELECT * FROM manufacturers;';
+    db.query(stmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
