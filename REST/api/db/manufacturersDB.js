@@ -1,10 +1,10 @@
 const db = require('./dbConfig');
 
 
-exports.getManufacturer = (id) => {
+exports.getManufacturer = (manufacturerID) => {
   return new Promise((resolve, reject) => {
     const stmt = 'SELECT * FROM manufacturers WHERE manufacturerID = ?';
-    db.query(stmt, id, (err, result) => {
+    db.query(stmt, manufacturerID, (err, result) => {
       if (err) {
         return reject(err);
       }
