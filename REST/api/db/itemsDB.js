@@ -25,23 +25,14 @@ exports.getItem = (itemID) => {
 };
 
 // Add an item to the items table
-exports.addItem = (itemData) => {
-    const stmt = 'INSERT INTO inventory.items SET ?'
-    const input = JSON.parse(JSON.stringify(req.body));
-  
-    const object = {
-      manufacturerID: input.manufacturerID, //examine
-      name: input.name,
-      model: input.model,
-      weight: input.weight,
-      price: input.price,
-      quantity: input.quantity,
-    };
-  
-    db.query(stmt, object, (err, rows) => {
-      if (err) {
-        console.log('Error inserting new item: %s', err);
-      }
+exports.addItem = (newItem) => {
+    const stmt = "INSERT INTO items SET ?;";
+    return new Promise((resolve, reject) => {
+        db.query(stmt, newItem, (err, result) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(result);
+        });
     });
-    res.redirect('/items');
-  };
+};

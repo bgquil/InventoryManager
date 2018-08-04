@@ -13,13 +13,25 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'item post',
-    });
+  const newItem = {
+    manufacturerID: req.body.manufacturerID, //examine
+    name: req.body.name,
+    model: req.body.model,
+    weight: req.body.weight,
+    price: req.body.price,
+    quantity: req.body.quantity,
+  };
+  itemDB.addItem(newItem).then((data) => {
+
+  }).catch(err => setImmediate(() => {
+      res.status(500);
+      throw err;}))
+
+    res.status(200).json(newItem);
 });
 
 router.get('/:itemID', (req, res, next) => {
-    itemDB.getItem(req.params.id).then((data) => {
+    itemDB.getItem(req.params.itemID).then((data) => {
         res.status(200).json(data);
     }).catch(err => setImmediate(() => {throw err;}))
 });
