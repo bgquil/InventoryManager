@@ -146,7 +146,7 @@ exports.getOrderInvoice = (orderID) => {
 
 
 exports.getNextOrderID = (orderListLength) => {
-  const orderStmt = 'call insert_order(?)';
+  const orderStmt = 'insert into orders SET totalQuantity=? '; 
   return new Promise((resolve, reject) => {
     db.query(orderStmt, orderListLength, (err, result) => {
       if (err) {

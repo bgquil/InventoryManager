@@ -40,6 +40,25 @@ exports.completeOrder = (req, res) => {
   const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
 
   ordersDB.getNextOrderID(orderList.length).then((data) => {
+    const orderID = data.insertId;
+    orderList.forEach((orderItem) => {
+      const values = [orderID, orderItem.itemID, orderItem.quantity];
+      db.query(itemStmt, values, (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+    res.redirect('/orders');
+  }).catch(err => setImmediate(() => {throw err}));
+
+};
+
+exports.completeOrder2 = (req, res) => {
+  const orderList = JSON.parse(JSON.stringify(req.body));
+  const itemStmt = 'INSERT INTO order_item (orderID, itemID, quantityOrdered) VALUES (?, ?, ?);'
+
+  ordersDB.getNextOrderID(orderList.length).then((data) => {
     const orderID = data[0][0].orderID;
     orderList.forEach((orderItem) => {
       const values = [orderID, orderItem.itemID, orderItem.quantity];
