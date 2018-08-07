@@ -1,5 +1,6 @@
 const db = require('./dbConfig')
 
+// get all items
 exports.getItems = () => {
     return new Promise((resolve, reject) => {
         const stmt = 'SELECT * FROM items;'
@@ -12,6 +13,7 @@ exports.getItems = () => {
     });
 };
 
+// get a single item;
 exports.getItem = (itemID) => {
     return new Promise((resolve, reject) => {
         const stmt = 'SELECT * FROM items WHERE itemID = ?;';

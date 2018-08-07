@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
     }));
 });
 
-router.post('/', (req, res, next) => {
+router.post('/add', (req, res, next) => {
   const newItem = {
     manufacturerID: req.body.manufacturerID, //examine
     name: req.body.name,

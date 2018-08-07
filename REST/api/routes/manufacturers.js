@@ -21,7 +21,7 @@ router.delete('/:manufacturerID', (req, res, next) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/add', (req, res, next) => {
     const manufacturer = {
         manufacturerName: req.body.manufacturerName,
     }
