@@ -3,8 +3,10 @@ const db = require('../config/db');
 const manufacturersDB = require('./db/manufacturersDB');
 const itemsDB = require('./db/itemsDB');
 
-const http = require('http');
+const manufacturerRest = require('../restService/manufacturerRest');
+
 const qs = require('querystring');
+
 
 // Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
@@ -16,47 +18,14 @@ exports.manufacturersMain = (req, res) => {
   });
 };
 
-// Add a new manufacturer to the database.
-exports.addManufacturer2 = (req, res) => {
-  const stmt = 'INSERT INTO inventory.manufacturers SET ?';
-  const input = JSON.parse(JSON.stringify(req.body));
-  const object = { manufacturerName: input.manufacturerName };
-
-  db.query(stmt, object, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
-  res.redirect('/manufacturers');
-};
-
-
-
 exports.addManufacturer = (req, res) => {
   const input = JSON.parse(JSON.stringify(req.body));
   const manufacturer_form_data = qs.stringify({ 
     manufacturerName: input.manufacturerName,
   });
-
-  const options = {
-    host: 'localhost',
-    port: 3001,
-    path:'/manufacturers/add',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(manufacturer_form_data)
-    }
-  };
-
-  const post_req = http.request(options, function(res) {
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-        console.log('Response: ' + chunk);
-    });
-  });
-  post_req.write(manufacturer_form_data);
-  post_req.end();
+  const apiPath = '/manufacturers/add'; 
+  const options = manufacturerRest.generatePostOptions(apiPath, manufacturer_form_data);
+  manufacturerRest.postRequest(options, manufacturer_form_data);
 
   res.redirect('/manufacturers');
 };
