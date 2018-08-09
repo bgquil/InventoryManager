@@ -26,6 +26,18 @@ exports.getItem = (itemID) => {
     });
 };
 
+exports.getItemByManufacturer = (manufacturerID) => {
+    return new Promise((resolve, reject) => {
+        const stmt = 'SELECT * FROM items WHERE manufacturerID = ?;';
+        db.query(stmt, manufacturerID, (err, result) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(result);
+        });
+    });
+};
+
 // Add an item to the items table
 exports.addItem = (newItem) => {
     const stmt = "INSERT INTO items SET ?;";
