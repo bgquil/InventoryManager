@@ -3,13 +3,20 @@ const db = require('../config/db');
 const manufacturers = require('./manufacturers');
 const itemsDB = require('./db/itemsDB');
 
+const restService = require('../restService/restService');
+
+const qs = require('querystring');
+
 
 // Render the items main view
 exports.renderItemsMain = (req, res) => {
   const quantityMin = 50;
-  itemsDB.getItemsByQuantity(quantityMin).then((data) => {
-    res.render('items/items.ejs', { title: 'Manage Items', data: data });
-  }).catch(err => setImmediate(() => { throw err; }));
+  restService.getRequest('/items', (err, itemData)=> {
+    if (err) {
+      console.log(err);
+    }
+    res.render('items/items.ejs', { title: 'Manage Items', data: itemData });
+  });
 };
 
 exports.searchItems = (req, res) => {
@@ -41,9 +48,9 @@ exports.searchItems = (req, res) => {
 
 // Render add item page
 exports.add = (req, res) => {
-  const stmt = 'SELECT * FROM inventory.manufacturers ORDER BY manufacturerName;';
-  db.query(stmt, (err, result) => {
-    if (err) throw err;
+  restService.getRequest('/manufacturers', (err, result) => {
+    if (err)
+      throw err;
     res.render('items/add_item', {
       title: 'Add Item',
       manufacturerData: result,
@@ -54,24 +61,26 @@ exports.add = (req, res) => {
 
 // Add an item to the items table
 exports.addItem = (req, res) => {
-  const stmt = 'INSERT INTO inventory.items SET ?'
+
   const input = JSON.parse(JSON.stringify(req.body));
 
-  const object = {
+  const newItem = qs.stringify({
     manufacturerID: input.manufacturerID, //examine
     name: input.name,
     model: input.model,
     weight: input.weight,
     price: input.price,
     quantity: input.quantity,
-  };
-
-  db.query(stmt, object, (err, rows) => {
-    if (err) {
-      console.log('Error inserting new item: %s', err);
-    }
   });
-  res.redirect('/items');
+
+  restService.postRequest('/items/add', newItem, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+    res.redirect('/items');
+  });
+
 };
 
 exports.removeItem = (req, res) => {

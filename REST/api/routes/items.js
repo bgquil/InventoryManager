@@ -22,12 +22,13 @@ router.post('/add', (req, res, next) => {
     quantity: req.body.quantity,
   };
   itemDB.addItem(newItem).then((data) => {
-
+      res.status(200).json({
+          message: 'Item Added'
+      });
   }).catch(err => setImmediate(() => {
-      res.status(500);
-      throw err;}))
-
-    res.status(200).json(newItem);
+      res.status(500).json({message: 'Internal Error'});
+      throw err;
+    }));
 });
 
 // Get a single item

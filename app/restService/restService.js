@@ -43,9 +43,8 @@ const generatePostOptions = (apiPath, data) => {
     return postOptions;
 }
 
-exports.postRequest = (path, postData) => {
+exports.postRequest = (path, postData, cb) => {
     const postOptions = generatePostOptions(path, postData);
-    //console.log(postOptions);
     const request = http.request(postOptions, (res) => {
         let result = '';
         res.setEncoding('utf8');
@@ -54,8 +53,9 @@ exports.postRequest = (path, postData) => {
         });
         res.on('end', () => {
             //console.log(result);
+            cb(null, result);
         });
-
+        res.on('error', cb);
     });
     request.write(postData);
     request.end();
