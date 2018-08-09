@@ -36,3 +36,16 @@ exports.addManufacturer = (manufacturer) => {
     });
   });
 };
+
+exports.editManufacturer = (manufacturerID, newName) => {
+  const stmt = 'UPDATE manufacturers SET manufacturerName = ? WHERE manufacturerID = ?';
+  return new Promise((resolve, reject) => {
+
+    db.query(stmt, [newName, manufacturerID], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+}
