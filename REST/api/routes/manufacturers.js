@@ -30,6 +30,9 @@ router.post('/add', (req, res, next) => {
         manufacturerName: req.body.manufacturerName,
     }
     manufacturersDB.addManufacturer(manufacturer).then((data) => {
+        res.status(200).json({
+            message: 'Add OK'
+        });
     }).catch(err => setImmediate( () => { 
         res.status(500).json(err); 
         }));
@@ -41,7 +44,9 @@ router.post('/:manufacturerID/edit', (req, res, next) => {
         manufacturerName: req.body.manufacturerName,
     }
     manufacturersDB.editManufacturer(req.params.manufacturerID, req.body.manufacturerName).then((data) => {
-
+        res.status(200).json({
+            message: "Edit OK"
+        });
     }).catch(err => setImmediate( () => {res.status(500).json(err)}));
 });
 

@@ -45,12 +45,18 @@ const generatePostOptions = (apiPath, data) => {
 
 exports.postRequest = (path, postData) => {
     const postOptions = generatePostOptions(path, postData);
-    const post_req = http.request(postOptions, function(res) {
+    //console.log(postOptions);
+    const request = http.request(postOptions, (res) => {
+        let result = '';
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            console.log('Response: ' + chunk);
+        res.on('data', (chunk) => {
+            result += chunk
         });
-        post_req.write(postData);
-        post_req.end();
+        res.on('end', () => {
+            //console.log(result);
+        });
+
     });
+    request.write(postData);
+    request.end();
 };
