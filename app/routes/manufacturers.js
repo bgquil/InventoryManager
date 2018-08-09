@@ -3,17 +3,21 @@ const db = require('../config/db');
 const manufacturersDB = require('./db/manufacturersDB');
 const itemsDB = require('./db/itemsDB');
 
-const manufacturerRest = require('../restService/manufacturerRest');
+const restService = require('../restService/restService');
 
 const qs = require('querystring');
 
 
 // Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
-  manufacturersDB.getManufacturers().then((data) => {
+  const apiPath = '/manufacturers'
+  restService.getRequest(apiPath, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
     res.render('manufacturers/manufacturers', {
       title: 'manufacturers',
-      manufacturerData: data,
+      manufacturerData: result,
     });
   });
 };
@@ -24,9 +28,7 @@ exports.addManufacturer = (req, res) => {
     manufacturerName: input.manufacturerName,
   });
   const apiPath = '/manufacturers/add'; 
-  const options = manufacturerRest.generatePostOptions(apiPath, manufacturer_form_data);
-  manufacturerRest.postRequest(options, manufacturer_form_data);
-
+  restService.postRequest(apiPath, manufacturer_form_data);
   res.redirect('/manufacturers');
 };
 
@@ -39,11 +41,14 @@ exports.deleteManufacturer = (req, res) => {
 
 // Render the edit manufacturer view
 exports.renderEdit = (req, res) => {
-  manufacturersDB.getManufacturers(req.params.id).then((data) => {
+  const manufacturerID = req.params.id;
+  const apiPath = '/manufacturers/'+ manufacturerID;
+  restService.getRequest(apiPath, (err, data) => {
     res.render('manufacturers/edit_manufacturer', {
       title: 'Edit Manufacturer',
       manufacturerData: data,
     });
+
   });
 };
 
