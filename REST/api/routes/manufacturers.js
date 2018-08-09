@@ -1,6 +1,7 @@
 const express = require('express');
 const router =  express.Router();
 const manufacturersDB = require('../db/manufacturersDB');
+const itemsDB = require('../db/itemsDB');
 
 
 // List all manufacturers
@@ -47,6 +48,13 @@ router.post('/:manufacturerID/edit', (req, res, next) => {
         res.status(200).json({
             message: "Edit OK"
         });
+    }).catch(err => setImmediate( () => {res.status(500).json(err)}));
+});
+
+router.get('/:manufacturerID/items', (req, res, next) => {
+    const manufacturerID = req.params.manufacturerID;
+    itemsDB.getItemByManufacturer(manufacturerID).then((data) => {
+        res.status(200).json(data);
     }).catch(err => setImmediate( () => {res.status(500).json(err)}));
 });
 

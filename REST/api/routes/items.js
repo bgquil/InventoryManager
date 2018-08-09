@@ -30,11 +30,11 @@ router.post('/add', (req, res, next) => {
     res.status(200).json(newItem);
 });
 
+// Get a single item
 router.get('/:itemID', (req, res, next) => {
     itemDB.getItem(req.params.itemID).then((data) => {
         res.status(200).json(data);
     }).catch(err => setImmediate(() => {throw err;}))
 });
-
 
 module.exports = router;
