@@ -69,13 +69,19 @@ exports.editManufacturer = (req, res) => {
 
 // Manufacturer Overview with Items
 exports.viewManufacturer = (req, res) => {
-  manufacturersDB.getManufacturers().then((data) => {
-    itemsDB.getItemsByManufacturer(req.params.id).then((itemList) => {
+  const manufacturerID = req.params.id;
+  const manufacturerPath = '/manufacturers/' + manufacturerID;
+  const manufacturerItemsPath = '/manufacturers/' + manufacturerID + '/items';
+  console.log(manufacturerItemsPath);
+  restService.getRequest(manufacturerPath, (err, manufacturerData) => {
+    restService.getRequest(manufacturerItemsPath, (err, itemData) => {
+      console.log(itemData);
       res.render('manufacturers/view_manufacturer', {
         title: 'Manufacturer Overview',
-        manufacturerData: data,
-        itemData: itemList,
+        manufacturerData,
+        itemData
       });
+
     });
   });
 };
