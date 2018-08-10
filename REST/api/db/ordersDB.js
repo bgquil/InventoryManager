@@ -1,6 +1,30 @@
 const db = require('./dbConfig');
 
-exports.getOrders = () => {
+exports.getOrders = (status, start, end) => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM orders LIMIT 10;';
+    db.query(orderStmt, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.getOrdersByStatus = (status) => {
+  return new Promise((resolve, reject) => {
+    const orderStmt = 'SELECT * FROM orders WHERE orderFulfilled = ?;';
+    db.query(orderStmt, status, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.getOrders = (status, start, end) => {
   return new Promise((resolve, reject) => {
     const orderStmt = 'SELECT * FROM orders LIMIT 10;';
     db.query(orderStmt, (err, result) => {
