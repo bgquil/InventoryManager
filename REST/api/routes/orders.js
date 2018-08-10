@@ -25,21 +25,23 @@ router.get('/fulfilled', (req, res, next) => {
 });
 
 router.get('/search', (req, res, next) => {
-    let orderFulfilled = req.query.status;  
+    let orderFulfilled = req.query.orderFulfilled;  
     let start = req.query.start;  
     let end = req.query.end;  
 
-    if (!orderFulfilled || orderFulfilled != 1 || orderFulfilled !=0) {
-        orderFulfilled = '0'
+    // handle bad search parameters
+    console.log(orderFulfilled != 0);
+    //check
+    if (orderFulfilled != 1 || orderFulfilled  != 0) {
+        res.status(500).json({
+            message: "Error: Bad parameters"
+        });
     }
-    if (!start)
-        start = '01/01/2017';
-    if (!end)
-        start = '01/01/2100';
-
-    ordersDB.getOrders(orderFulFilled, start, end).then((data) => {
-        res.status(200).json(data);
-    }).catch(err => setImmediate(() => { throw err;}))
+    else {
+        ordersDB.getOrdersSearch(start, end, orderFulfilled ).then((data) => {
+            res.status(200).json(data);
+        }).catch(err => setImmediate(() => { throw err;}))
+    }
 });
 
 // get order metadata

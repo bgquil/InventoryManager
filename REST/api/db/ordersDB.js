@@ -24,13 +24,18 @@ exports.getOrdersByStatus = (status) => {
   });
 };
 
-exports.getOrders = (status, start, end) => {
+exports.getOrdersSearch = (startDate, endDate, orderFulfilled) => {
   return new Promise((resolve, reject) => {
-    const orderStmt = 'SELECT * FROM orders LIMIT 10;';
-    db.query(orderStmt, (err, result) => {
+    const orderStmt = 'SELECT * FROM orders WHERE orderTime>=? and orderTime<=? and orderFulfilled = ?;';
+    console.log(startDate);
+    console.log(endDate);
+    console.log(orderFulfilled);
+    const searchParameters = [startDate, endDate, orderFulfilled];
+    db.query(orderStmt, searchParameters, (err, result) => {
       if (err) {
         return reject(err);
       }
+      console.log(result);
       return resolve(result);
     });
   });
