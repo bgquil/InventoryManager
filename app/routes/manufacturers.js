@@ -1,10 +1,6 @@
 // Import database connection
 const db = require('../config/db');
-const manufacturersDB = require('./db/manufacturersDB');
-const itemsDB = require('./db/itemsDB');
-
 const restService = require('../restService/restService');
-
 const qs = require('querystring');
 
 
@@ -54,17 +50,24 @@ exports.renderEdit = (req, res) => {
 
 // Apply edit to manufacturer
 exports.editManufacturer = (req, res) => {
-  const stmt = 'UPDATE manufacturers SET ? WHERE manufacturerID = ?';
-  const manufacturerEdits = JSON.parse(JSON.stringify(req.body));
+  const input = JSON.parse(JSON.stringify(req.body));
+  const manufacturerID = input.manufacturerID;
 
-  db.query(stmt, [manufacturerEdits, req.params.id], (err) => {
-    if (err) {
-      throw err;
-    }
-    else {
-      res.redirect('/manufacturers');
-    }
+  const manufacturer_edit_data = qs.stringify({
+    manufacturerID: manufacturerID,
+    manufacturerName: input.manufacturerName
   });
+
+  console.log(manufacturer_edit_data);
+
+  const apiPath = '/manufacturers/' + manufacturerID + '/edit';
+  restService.postRequest(apiPath, manufacturer_edit_data, (err, result) => {
+    if (err)
+      throw err;
+    console.log(result);
+    res.redirect('/manufacturers/');
+  });
+
 };
 
 // Manufacturer Overview with Items
