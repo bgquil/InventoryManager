@@ -1,17 +1,21 @@
 <%include ../partials/header %>
-<h1><%= title %></h1>
 <div class="container">
-    <form method="POST" action="/manufacturers/edit/<%=manufacturerData[0].manufacturerID%>">
-        <div class="form-group">
-            <label for="id">Manufacturer ID</label>
-            <input type="text" class="form-control" id="manufacturerID" value="<%=manufacturerData[0].manufacturerID %>" name="manufacturerID" readonly>
-        </div>
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="manufacturerName" value="<%=manufacturerData[0].manufacturerName %>" name="manufacturerName">
-        </div>
-        <button type="submit" class="btn btn-primary float-right">Submit Changes</button>
-        <button href="/manufacturers" class="btn btn-secondary float-left">Cancel</button>
-    </form>
+    <h1><%= title %></h1>
+    <div class="container">
+        <form method="POST" action="/manufacturers/edit/<%=manufacturerData[0].manufacturerID%>">
+            <div class="form-group">
+                <label for="id">Manufacturer ID</label>
+                <input type="text" class="form-control" id="manufacturerID" value="<%=manufacturerData[0].manufacturerID %>" name="manufacturerID" readonly>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="manufacturerName" value="<%=manufacturerData[0].manufacturerName %>" name="manufacturerName">
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Submit Changes</button>
+            <button href="/manufacturers" class="btn btn-secondary float-left">Cancel</button>
+        </form>
+    </div>
+    <!--- examine--->
+    <button href="/manufacturers/delete/<%=manufacturerData[0].manufacturerID %>" class="btn btn-secondary float-right">DELETE</button>
 </div>
 <%include ../partials/footer %>

@@ -4,6 +4,23 @@ const restService = require('../restService/restService');
 const qs = require('querystring');
 
 
+const createManufacturer = (formData) => {
+  const input = JSON.parse(JSON.stringify(formData));
+  console.log(input);
+  let manufacturer = {
+    manufacturerID: input.manufacturerID, 
+    manufacturerName: input.manufacturerName
+  };
+  return manufacturer;
+};
+
+const verifyManufacturer = (manufacturer) => {
+  // todo
+  //const id = parseInt(req.params.id, 10);
+  return true;
+};
+
+
 // Render the manufacturers main view.
 exports.manufacturersMain = (req, res) => {
   const apiPath = '/manufacturers'
@@ -30,9 +47,20 @@ exports.addManufacturer = (req, res) => {
 
 // Remove a manufacturer from the database.
 exports.deleteManufacturer = (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  exports.deleteManufacturer(id);
-  res.redirect('/manufacturers');
+// implement delete http
+  if (true) {
+    const apiPath = '/manufacturers/' + req.params.id + '/delete';
+    restService.postRequest(apiPath, 'test', (err, result) => {
+      if (err)
+        throw err;
+      console.log(result);
+        
+    });
+  }
+  else {
+      res.redirect('/manufacturers');
+    // handle
+  }
 };
 
 // Render the edit manufacturer view

@@ -19,9 +19,11 @@ router.get('/:manufacturerID', (req, res, next) => {
 });
 
 // Delete a manufacturer by ID
-router.delete('/:manufacturerID', (req, res, next) => {
+router.delete('/:manufacturerID/delete', (req, res, next) => {
+    const id = req.params.manufacturerID;
     res.status(200).json({
-        message: 'Deleted Manufacturer',
+        message: 'Mock Delete Manufacturer',
+        id
     });
 });
 
