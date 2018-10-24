@@ -21,10 +21,12 @@ router.get('/:manufacturerID', (req, res, next) => {
 // Delete a manufacturer by ID
 router.delete('/:manufacturerID/delete', (req, res, next) => {
     const id = req.params.manufacturerID;
-    res.status(200).json({
-        message: 'Mock Delete Manufacturer',
+    manufacturersDB.deleteManufacturer(id).then((data) => {
+        res.status(200).json({
+        message: 'Manufacturer Deleted',
         id
-    });
+        });
+    }).catch(err => setImmediate(() => {throw err;}));
 });
 
 // Add a new manufacturer

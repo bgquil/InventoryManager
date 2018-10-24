@@ -49,3 +49,16 @@ exports.editManufacturer = (manufacturerID, newName) => {
     });
   });
 }
+
+// set manufacturer to deleted
+exports.deleteManufacturer = (manufacturerID) => {
+  return new Promise((resolve, reject) => {
+    const stmt = 'UPDATE manufacturers SET deleted = 1 WHERE manufacturerID = ?';
+    db.query(stmt, manufacturerID, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
+};

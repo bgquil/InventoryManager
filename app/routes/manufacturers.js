@@ -48,18 +48,19 @@ exports.addManufacturer = (req, res) => {
 // Remove a manufacturer from the database.
 exports.deleteManufacturer = (req, res) => {
 // implement delete http
-  if (true) {
+  const id = parseInt(req.params.id, 10);
+  if (id >= 0 && id != NaN) {
     const apiPath = '/manufacturers/' + req.params.id + '/delete';
-    restService.postRequest(apiPath, 'test', (err, result) => {
+    console.log(apiPath)
+    restService.deleteRequest(apiPath,  req.params.id, (err, result) => {
       if (err)
         throw err;
       console.log(result);
-        
+      res.redirect('/manufacturers');
     });
   }
   else {
-      res.redirect('/manufacturers');
-    // handle
+      res.redirect('/manufacturers/edit' + id);
   }
 };
 
