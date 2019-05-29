@@ -63,6 +63,7 @@ router.get('/:orderID/invoice', (req, res, next) => {
 
 });
 
+// Add order
 router.post('/', (req, res, next) => {
     const newOrder = {
         message: 'test'
