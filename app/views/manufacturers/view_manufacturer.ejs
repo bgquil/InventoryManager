@@ -1,44 +1,48 @@
 <%include ../partials/header %>
-<h1><%= title %></h1>
 
 <div class="container">
-    <h2><%=manufacturerData[0].manufacturerName%></h2>
-    <div class = "data-table">
-        <table class ="table table-striped" id="table_items">
-            <thead class="thead-inverse">
-                <tr>
-                    <th>#</th>
-                    <th>ID</th>
-                    <th>Manufacturer</th>
-                    <th>Name</th>
-                    <th>Model</th>
-                    <th>Quantity</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="items_table_body">
-            <% if(itemData.length){
-                for (var i = 0; i < itemData.length; i++) { %>
-                <tr>
-                    <td><%=(i+1)%></td>
-                    <td><%=itemData[i].itemID%></td>
-                    <td><%=itemData[i].manufacturerName%></td>
-                    <td><%=itemData[i].name%></td>
-                    <td><%=itemData[i].model%></td>
-                    <td><%=itemData[i].quantity%></td>
-                    <td>
-                        <a class="a-inside edit" href="/items/edit/<%=itemData[i].itemID %>">Edit</a>
-                        <a class="a-inside edit" href="/items/delete/<%=itemData[i].itemID %>">Delete</a>
-                    </td>
-                </tr>
+    <div class="py5 text-center">
 
-                <%  }
-            }else{ %>
-                <tr><td>No Items Found</td></tr>
-            <% } %>
-            </tbody>
-        </table>
-    </div>
+    <h1><%=manufacturerData[0].manufacturerName%></h1>
+        <div class="col-md-2 order-md-2 mb-4"></div>
+        <div class = "data-table">
+            <table class ="table table-striped" id="table_items">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Manufacturer</th>
+                        <th>Name</th>
+                        <th>Model</th>
+                        <th>Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="items_table_body">
+                <% if(itemData.length){
+                    for (var i = 0; i < itemData.length; i++) { %>
+                    <tr>
+                        <td><%=(i+1)%></td>
+                        <td><%=itemData[i].itemID%></td>
+                        <td><%=itemData[i].manufacturerName%></td>
+                        <td><%=itemData[i].name%></td>
+                        <td><%=itemData[i].model%></td>
+                        <td><%=itemData[i].quantity%></td>
+                        <td>
+                            <a class="a-inside edit" href="/items/edit/<%=itemData[i].itemID %>">Edit</a>
+                            <a class="a-inside edit" href="/items/delete/<%=itemData[i].itemID %>">Delete</a>
+                        </td>
+                    </tr>
+
+                    <%  }
+                }else{ %>
+                    <tr><td>No Items Found</td></tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+            </div>
+        </div>
 
 </div>
 

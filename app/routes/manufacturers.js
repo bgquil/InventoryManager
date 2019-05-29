@@ -47,7 +47,6 @@ exports.addManufacturer = (req, res) => {
 
 // Remove a manufacturer from the database.
 exports.deleteManufacturer = (req, res) => {
-// implement delete http
   const id = parseInt(req.params.id, 10);
   if (id >= 0 && id != NaN) {
     const apiPath = '/manufacturers/' + req.params.id + '/delete';
