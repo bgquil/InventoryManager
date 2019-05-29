@@ -73,9 +73,12 @@ exports.getOrderItems = (orderID) => {
   });
 };
 
+// Return Order data and all items associated with an order.
 exports.getOrder = (orderID) => {
   return Promise.all([exports.getOrderData(orderID), exports.getOrderItems(orderID)]);
 };
+
+
 // Create a new order inserting its total quantity and return its ID.
 exports.createOrder = (totalQuantity) => {
   return new Promise( (reject, resolve) => {
@@ -86,7 +89,7 @@ exports.createOrder = (totalQuantity) => {
       return resolve(result);
     });
   });
-}
+};
 
 exports.setupOrder = (orderList) => {
   // create order and retrieve its ID  

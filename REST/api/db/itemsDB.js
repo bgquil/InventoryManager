@@ -26,6 +26,7 @@ exports.getItem = (itemID) => {
     });
 };
 
+// Get all items from a manufacturer
 exports.getItemByManufacturer = (manufacturerID) => {
     return new Promise((resolve, reject) => {
         const stmt = 'SELECT * FROM items WHERE manufacturerID = ?;';
