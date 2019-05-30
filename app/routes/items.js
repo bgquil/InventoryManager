@@ -38,11 +38,20 @@ exports.searchItems = (req, res) => {
       searchType = 'name';
   }
 
-  const placeVals = [searchType, searchString];
+  const placeVals = qs.stringify({searchType, searchString});
+  restService.postRequest('/items/search', placeVals, (err, result) => {
+    console.log("IN SEARCH");
+    if (err)
+      console.log(err);
+    console.log(result);
+    res.send({searchData: result});
+  });
 
+  /*
   itemsDB.searchItems(placeVals).then((data) => {
     res.send({ searchData: data });
   }).catch(err => setImmediate(() => { throw err; }));
+  */
 };
 
 

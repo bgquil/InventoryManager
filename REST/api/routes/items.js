@@ -31,11 +31,22 @@ router.post('/add', (req, res, next) => {
     }));
 });
 
+// Item Search
+router.post('/search', (req, res, next) => {
+    const search = req.body;
+    itemDB.searchItem(search).then((data) => {
+        res.status(200).json(data);
+    }).catch(err => setImmediate(() => {throw err;}));
+
+});
+
 // Get a single item
 router.get('/:itemID', (req, res, next) => {
     itemDB.getItem(req.params.itemID).then((data) => {
         res.status(200).json(data);
     }).catch(err => setImmediate(() => {throw err;}))
 });
+
+
 
 module.exports = router;

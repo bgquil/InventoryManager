@@ -51,3 +51,18 @@ exports.addItem = (newItem) => {
         });
     });
 };
+
+// Search Items
+exports.searchItem = (search) => {
+    console.log(search);
+    //const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE ?? = ?';
+    const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE manufacturerName = ?';
+    return new Promise((resolve, reject) => {
+        db.query(stmt, 'Cobalt LLC', (err, result) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(result);
+        });
+    });
+};
