@@ -163,18 +163,18 @@ $(() => {
         itemSearchString: searchString.val(),
       }),
       success: (res) => {
-        buildItemsOrderSearchTable(res.searchData);
+        buildItemsOrderSearchTable(res.searchResult);
       },
     });
   });
 
-  const buildItemsOrderSearchTable = (searchData) => {
-
+  const buildItemsOrderSearchTable = (searchResult) => {
+    console.log(searchResult);
+    console.log(typeof searchResult);
     const tableB = $('.order_items-table-body');
     tableB.html('');
     let rowNum = 0;
-    searchData.forEach((item) => {
-
+    searchResult.forEach((item) => {
       tableB.append('\
             <tr>\
                 <td>' + ++rowNum + '</td>\
