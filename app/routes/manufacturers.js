@@ -103,16 +103,14 @@ exports.viewManufacturer = (req, res) => {
   const manufacturerID = req.params.id;
   const manufacturerPath = '/manufacturers/' + manufacturerID;
   const manufacturerItemsPath = '/manufacturers/' + manufacturerID + '/items';
-  console.log(manufacturerItemsPath);
+
   restService.getRequest(manufacturerPath, (err, manufacturerData) => {
     restService.getRequest(manufacturerItemsPath, (err, itemData) => {
-      console.log(itemData);
       res.render('manufacturers/view_manufacturer', {
         title: 'Manufacturer Overview',
         manufacturerData,
         itemData
       });
-
     });
   });
 };
