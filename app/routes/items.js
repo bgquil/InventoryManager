@@ -8,6 +8,11 @@ const restService = require('../restService/restService');
 const qs = require('querystring');
 
 
+/*
+    ### Rendering ###
+*/
+
+
 // Render the items main view
 exports.renderItemsMain = (req, res) => {
   const quantityMin = 50;
@@ -19,24 +24,6 @@ exports.renderItemsMain = (req, res) => {
   });
 };
 
-exports.searchItems = (req, res) => {
-  const input = JSON.parse(JSON.stringify(req.body));
-  // Parse search
-  let searchType = '';
-  const searchString = input.itemSearchString;
-  switch (input.itemSearchType) {
-    case 'Manufacturer':
-      searchType = 'manufacturerName';
-      break;
-    case 'Name':
-      searchType = 'name';
-      break;
-    case 'Model':
-      searchType = 'model';
-      break;
-    default:
-      searchType = 'name';
-  }
 
   const search = qs.stringify({searchType, searchString});
   restService.postRequest('/items/search', search, (err, searchResult) => {
@@ -60,6 +47,20 @@ exports.add = (req, res) => {
   });
 };
 
+
+// Render delete confirmation view
+exports.renderDelete = (req, res) => {
+  const stmt = 'SELECT * FROM items INNER JOIN\
+        manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE itemID = ?';
+
+  db.query(stmt, req.params.id, (err, result) => {
+    if (err) throw err;
+    res.render('items/delete_item', {
+      title: 'Delete Item',
+      itemData: result,
+    });
+  });
+};
 
 // Add an item to the items table
 exports.addItem = (req, res) => {
@@ -121,6 +122,7 @@ exports.editItem = (req, res) => {
   });
 };
 
+// Apply changes to an item
 exports.applyEdit = (req, res) => {
   const stmt = 'UPDATE items SET ? WHERE itemID=?';
   const input = JSON.parse(JSON.stringify(req.body));
@@ -141,21 +143,6 @@ exports.applyEdit = (req, res) => {
   });
 };
 
-// Render delete confirmation view
-exports.renderDelete = (req, res) => {
-  const stmt = 'SELECT * FROM items INNER JOIN\
-        manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE itemID = ?';
-
-  db.query(stmt, req.params.id, (err, result) => {
-    if (err) throw err;
-    res.render('items/delete_item', {
-      title: 'Delete Item',
-      itemData: result,
-    });
-  });
-
-};
-
 // Apply deletion to database
 exports.applyDelete = (req, res) => {
   let stmt = '';
@@ -164,4 +151,20 @@ exports.applyDelete = (req, res) => {
 
 };
 
-
+// Search Items
+exports.searchItems = (req, res) => {
+  const input = JSON.parse(JSON.stringify(req.body));
+  // Parse search
+  let searchType = 'manufacturerName';
+  const searchString = input.itemSearchString;
+  switch (input.itemSearchType) {
+    case 'Manufacturer':
+      searchType = 'manufacturerName';
+      break;
+    case 'Name':
+      searchType = 'name';
+      break;
+    case 'Model':
+      searchType = 'model';
+      break;
+  }
