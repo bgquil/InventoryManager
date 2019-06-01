@@ -45,14 +45,6 @@ exports.searchItems = (req, res) => {
     searchResult = JSON.parse(searchResult);
     res.send({searchResult});
   });
-
-  /*
-  const placeVals = [searchType, searchString];
-  itemsDB.searchItems(placeVals).then((data) => {
-    console.log(data);
-    res.send({ searchData: data });
-  }).catch(err => setImmediate(() => { throw err; }));
-  */
 };
 
 
