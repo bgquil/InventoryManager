@@ -42,11 +42,11 @@ $(() => {
 
   // Items
 
-  const buildItemsTable = (searchData) => {
+  const buildItemsTable = (searchResult) => {
     const tableB = $('#items_table_body');
     tableB.html('');
     let rowNum = 0;
-    searchData.forEach((item) => {
+    searchResult.forEach((item) => {
       tableB.append('\
             <tr>\
                 <td class="id">' + ++rowNum + '</td>\
@@ -77,7 +77,7 @@ $(() => {
         itemSearchString: searchString.val(),
       }),
       success: (res) => {
-        buildItemsTable(res.searchData);
+        buildItemsTable(res.searchResult);
       },
     });
   });

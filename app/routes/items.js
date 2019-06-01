@@ -10,7 +10,7 @@ const qs = require('querystring');
 
 /*
 
-    ### Rendering ###
+### Rendering ###
 
 */
 
@@ -25,9 +25,6 @@ exports.renderItemsMain = (req, res) => {
     res.render('items/items.ejs', { title: 'Manage Items', data: itemData });
   });
 };
-
-
-
 
 // Render add item page
 exports.add = (req, res) => {
