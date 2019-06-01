@@ -9,7 +9,9 @@ const qs = require('querystring');
 
 
 /*
+
     ### Rendering ###
+
 */
 
 
@@ -25,14 +27,6 @@ exports.renderItemsMain = (req, res) => {
 };
 
 
-  const search = qs.stringify({searchType, searchString});
-  restService.postRequest('/items/search', search, (err, searchResult) => {
-    if (err)
-      console.log(err);
-    searchResult = JSON.parse(searchResult);
-    res.send({searchResult});
-  });
-};
 
 
 // Render add item page
@@ -61,6 +55,12 @@ exports.renderDelete = (req, res) => {
     });
   });
 };
+
+/*
+
+ ### Actions ###
+
+*/
 
 // Add an item to the items table
 exports.addItem = (req, res) => {
@@ -168,3 +168,12 @@ exports.searchItems = (req, res) => {
       searchType = 'model';
       break;
   }
+
+  const search = qs.stringify({searchType, searchString});
+  restService.postRequest('/items/search', search, (err, searchResult) => {
+    if (err)
+      console.log(err);
+    searchResult = JSON.parse(searchResult);
+    res.send({searchResult});
+  });
+};
