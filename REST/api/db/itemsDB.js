@@ -54,11 +54,10 @@ exports.addItem = (newItem) => {
 
 // Search Items
 exports.searchItem = (search) => {
-    console.log(search);
-    //const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE ?? = ?';
-    const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE manufacturerName = ?';
+    const queryParams = [search.searchType, search.searchString];
+    const stmt = 'SELECT * from items INNER JOIN manufacturers ON items.manufacturerID = manufacturers.manufacturerID WHERE ?? = ?';
     return new Promise((resolve, reject) => {
-        db.query(stmt, 'Cobalt LLC', (err, result) => {
+        db.query(stmt, queryParams, (err, result) => {
             if (err) {
                 return reject(err);
             }
