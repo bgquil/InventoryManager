@@ -29,9 +29,14 @@ exports.addManufacturer = (req, res) => {
     manufacturerName: input.manufacturerName,
   });
   console.log(manufacturer_form_data);
-  const apiPath = '/manufacturers/add'; 
-  restService.postRequest(apiPath, manufacturer_form_data);
-  res.redirect('/manufacturers');
+
+  const addManufacturerAPI = '/manufacturers/add'; 
+
+  restService.postRequest(addManufacturerAPI, manufacturer_form_data, (err, result) => {
+    if (err)
+      throw err;
+    res.redirect('/manufacturers');
+  });
 };
 
 // Single manufacturer overview with items
