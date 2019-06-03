@@ -1,11 +1,12 @@
 <%include ../partials/header %>
 
+<% 
+const manufacturerName = manufacturerData[0].manufacturerName;
+const numItems = itemData.length;
+%>
+
 <div class="container">
     <div class="py5 text-center">
-    <% 
-    const manufacturerName = manufacturerData[0].manufacturerName;
-    const numItems = itemData.length;
-    %>
     <h1><%=manufacturerName%></h1>
     <h2>Total Items: <%=numItems%></h2>
         <div class="col-md-2 order-md-2 mb-4"></div>
