@@ -2,8 +2,12 @@
 
 <div class="container">
     <div class="py5 text-center">
-
-    <h1><%=manufacturerData[0].manufacturerName%></h1>
+    <% 
+    const manufacturerName = manufacturerData[0].manufacturerName;
+    const numItems = itemData.length;
+    %>
+    <h1><%=manufacturerName%></h1>
+    <h2>Total Items: <%=numItems%></h2>
         <div class="col-md-2 order-md-2 mb-4"></div>
         <div class = "data-table">
             <table class ="table table-striped" id="table_items">
@@ -24,7 +28,7 @@
                     <tr>
                         <td><%=(i+1)%></td>
                         <td><%=itemData[i].itemID%></td>
-                        <td><%=itemData[i].manufacturerName%></td>
+                        <td><%=manufacturerName%></td>
                         <td><%=itemData[i].name%></td>
                         <td><%=itemData[i].model%></td>
                         <td><%=itemData[i].quantity%></td>
