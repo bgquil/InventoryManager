@@ -36,7 +36,8 @@ router.post('/add', (req, res, next) => {
     }
     manufacturersDB.addManufacturer(manufacturer).then((data) => {
         res.status(200).json({
-            message: 'Add OK'
+            message: 'Add OK',
+            manufacturerID: data.insertId
         });
     }).catch(err => setImmediate( () => { 
         res.status(500).json(err); 
