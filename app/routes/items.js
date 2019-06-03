@@ -73,12 +73,13 @@ exports.addItem = (req, res) => {
     quantity: input.quantity,
   });
 
-  restService.postRequest('/items/add', newItem, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    console.log(result);
-    res.redirect('/items');
+  const addItemAPI = '/items/add'
+
+  restService.postRequest(addItemAPI, newItem, (err, result) => {
+    if (err)
+      console.log(result);
+    else
+      res.redirect('/items');
   });
 
 };
