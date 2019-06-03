@@ -35,7 +35,10 @@ exports.addManufacturer = (req, res) => {
   restService.postRequest(addManufacturerAPI, manufacturer_form_data, (err, result) => {
     if (err)
       throw err;
-    res.redirect('/manufacturers');
+    result = JSON.parse(result);
+    const redirectURL = '/manufacturers/' + result.manufacturerID;
+    // todo implement
+    //res.redirect(redirectURL);
   });
 };
 
