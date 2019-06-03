@@ -6,6 +6,6 @@ const restService = require('../restService/restService');
 exports.index = (req, res) => {
   const openPath = '/orders/open'
   restService.getRequest(openPath, (err, result) => {
-    res.render('index', { title: 'Root Index', orderData: result });
+    res.render('index', { pageTitle: 'Root Index', orderData: result });
   });
 };
