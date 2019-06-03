@@ -17,7 +17,7 @@ exports.manufacturersMain = (req, res) => {
       console.log(err);
     }
     res.render('manufacturers/manufacturers', {
-      title: 'manufacturers',
+      pageTitle: 'Manufacturers - Main',
       manufacturerData: result,
     });
   });
@@ -51,7 +51,7 @@ exports.viewManufacturer = (req, res) => {
   restService.getRequest(manufacturerPath, (err, manufacturerData) => {
     restService.getRequest(manufacturerItemsPath, (err, itemData) => {
       res.render('manufacturers/view_manufacturer', {
-        title: 'Manufacturer Overview',
+        pageTitle: 'Overview - ' + manufacturerData[0].manufacturerName,
         manufacturerData,
         itemData
       });
@@ -66,10 +66,9 @@ exports.renderEdit = (req, res) => {
   const apiPath = '/manufacturers/'+ manufacturerID;
   restService.getRequest(apiPath, (err, data) => {
     res.render('manufacturers/edit_manufacturer', {
-      title: 'Edit Manufacturer',
+      pageTitle: 'Edit Manufacturer',
       manufacturerData: data,
     });
-
   });
 };
 
