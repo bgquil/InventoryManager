@@ -5,32 +5,32 @@ const ordersDB = require('./db/ordersDB');
 // Render orders main page.
 exports.listRecentOrders = (req, res) => {
   ordersDB.getRecentOrders().then((data) => {
-    res.render('orders/orders', { title: 'Orders', orderData: data });
+    res.render('orders/orders', { pageTitle: 'Orders', orderData: data });
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
 // Render orders main page.
 exports.renderOpenOrders = (req, res) => {
   ordersDB.getOpenOrders().then((data) => {
-    res.render('orders/view_open_order', { title: 'Orders', orderData: data });
+    res.render('orders/view_open_order', { pageTitle: 'Orders', orderData: data });
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
 // Render orders search page.
 exports.searchOrdersView = (req, res) => {
   ordersDB.getRecentOrders().then((data) => {
-    res.render('orders/search_order', { title: 'Orders', orderData: data });
+    res.render('orders/search_order', { pageTitle: 'Orders', orderData: data });
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
 // Render create order page
 exports.createOrder = (req, res) => {
-  res.render('orders/create_order', { title: 'Create Order' });
+  res.render('orders/create_order', { pageTitle: 'Create Order' });
 };
 
 exports.listOrders = (req, res) => {
   ordersDB.getRecentOrders().then((data) => {
-    res.render('orders/orders', { title: 'Orders', orderData: data });
+    res.render('orders/orders', { pageTitle: 'Orders', orderData: data });
   }).catch(err => setImmediate(() => { throw err; }));
 };
 
@@ -77,7 +77,7 @@ exports.viewOrder = (req, res) => {
   const orderID = parseInt(req.params.id, 10);
   ordersDB.getOrderInvoice(orderID).then((invoiceData) => {
     // invoiceData is [0] = order information, [1] = item information in orders
-    res.render('orders/view_order', { title: 'Order Invoice', orderData: invoiceData[0], itemData: invoiceData[1] });
+    res.render('orders/view_order', { pageTitle: 'Order Invoice', orderData: invoiceData[0], itemData: invoiceData[1] });
   });
 };
 

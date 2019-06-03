@@ -22,7 +22,9 @@ exports.renderItemsMain = (req, res) => {
     if (err) {
       console.log(err);
     }
-    res.render('items/items.ejs', { title: 'Manage Items', data: itemData });
+    res.render('items/items.ejs', { 
+      pageTitle: 'Manage Items', data: itemData
+    });
   });
 };
 
@@ -32,7 +34,7 @@ exports.add = (req, res) => {
     if (err)
       throw err;
     res.render('items/add_item', {
-      title: 'Add Item',
+      pageTitle: 'Add Item',
       manufacturerData: result,
     });
   });
@@ -47,7 +49,7 @@ exports.renderDelete = (req, res) => {
   db.query(stmt, req.params.id, (err, result) => {
     if (err) throw err;
     res.render('items/delete_item', {
-      title: 'Delete Item',
+      pageTitle: 'Delete Item',
       itemData: result,
     });
   });
