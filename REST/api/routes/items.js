@@ -26,7 +26,7 @@ router.post('/add', (req, res, next) => {
           message: 'Item Added'
       });
   }).catch(err => setImmediate(() => {
-      res.status(500).json({message: 'Internal Error'});
+      res.status(501).json({message: 'Internal Error'});
       throw err;
     }));
 });
